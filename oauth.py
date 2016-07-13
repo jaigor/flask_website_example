@@ -1,6 +1,7 @@
 from rauth import OAuth1Service, OAuth2Service
 from flask import current_app, url_for, request, redirect, session
 
+
 class OAuthSignIn(object):
     providers = None
 
@@ -29,14 +30,15 @@ class OAuthSignIn(object):
                 self.providers[provider.provider_name] = provider
         return self.providers[provider_name]
 
+
 class FacebookSignIn(OAuthSignIn):
     def __init__(self):
-        super().__init__('facebook')
+        super(FacebookSignIn, self).__init__('facebook')
         self.service = OAuth2Service(
             name='facebook',
             client_id=self.consumer_id,
             client_secret=self.consumer_secret,
-            authorize_url='https://graph.facebook.com/oauth/authorize',           
+            authorize_url='https://graph.facebook.com/oauth/authorize',
             access_token_url='https://graph.facebook.com/oauth/access_token',
             base_url='https://graph.facebook.com/'
         )
@@ -56,20 +58,19 @@ class FacebookSignIn(OAuthSignIn):
                   'grant_type': 'authorization_code',
                   'redirect_uri': self.get_callback_url()}
         )
-        me = oauth_session.get('me').json()
-        print(me['id'])
+        me = oauth_session.get('me?fields=id,email').json()
         return (
             'facebook$' + me['id'],
-            # JON: Facebook doesn't give the email now: http://stackoverflow.com/questions/32001609/cant-get-facebook-email
-            #me.get('email').split('@')[0],  # Facebook does not provide
+            me.get('email').split('@')[0],  # Facebook does not provide
                                             # username, so the email's user
                                             # is used instead
-            #me.get('email')
+            me.get('email')
         )
+
 
 class TwitterSignIn(OAuthSignIn):
     def __init__(self):
-        super().__init__('twitter')
+        super(TwitterSignIn, self).__init__('twitter')
         self.service = OAuth1Service(
             name='twitter',
             consumer_key=self.consumer_id,

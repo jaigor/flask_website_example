@@ -5,6 +5,11 @@ from .forms import LoginForm
 from flask_login import login_user, logout_user, current_user
 from oauth import OAuthSignIn
 
+# user loader callback function
+@lm.user_loader
+def load_user(id):
+    return User.query.get(int(id))
+
 @app.route('/')
 @app.route('/index')
 def index():
@@ -27,18 +32,12 @@ def index():
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     return render_template('login.html', 
-                           title='Sign In',
-                           providers=app.config['OAUTH_CREDENTIALS'])
+                           title='Sign In')
 
 @app.route('/logout')
 def logout():
     logout_user()
     return redirect(url_for('index'))
-
-# user loader callback function
-@lm.user_loader
-def load_user(id):
-    return User.query.get(int(id))
 
 @app.route('/authorize/<provider>')
 def oauth_authorize(provider):
@@ -61,5 +60,6 @@ def oauth_callback(provider):
         user = User(social_id=social_id, nickname=username, email=email)
         db.session.add(user)
         db.session.commit()
+    # Login and validate the user
     login_user(user, True)
     return redirect(url_for('index'))
