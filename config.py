@@ -4,6 +4,9 @@ basedir = os.path.abspath(os.path.dirname(__file__))
 SQLALCHEMY_DATABASE_URI = 'sqlite:///' + os.path.join(basedir, 'app.db')
 SQLALCHEMY_MIGRATE_REPO = os.path.join(basedir, 'db_repository')
 
+# deactivating event system (shell warning)
+SQLALCHEMY_TRACK_MODIFICATIONS = True
+
 WTF_CSRF_ENABLED = True
 SECRET_KEY = 'you-will-never-guess'
 
@@ -18,7 +21,3 @@ OAUTH_CREDENTIALS = {
         'secret': 'OPSnX2aNfrNa4kykxze9h1HQkynpMAC3qtxvRD8b8jtrtpmugR'
     }
 }
-APP_ID = '636798506489008'
-REDIRECT_URI = 'http://localhost:5000/callback/facebook'
-SCOPE = 'public_profile,email'
-APP_SECRET = '4d94fc2a98b9b50e1ac0b658e6ead3cc'

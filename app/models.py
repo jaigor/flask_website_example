@@ -7,10 +7,13 @@ from oauth import OAuthSignIn
 
 class User(UserMixin, db.Model):
     __tablename__ = 'users'
+    # User Information
     id = db.Column(db.Integer, primary_key=True)
+    # User id from the provider service
     social_id = db.Column(db.String(64), nullable=False, unique=True)
     nickname = db.Column(db.String(64), nullable=False)
     email = db.Column(db.String(64), nullable=True) 
+    # User Relationships
     # relationship between Post and User, backref used as a reference in Post()
     posts = db.relationship('Post', backref='author', lazy='dynamic') 
 
