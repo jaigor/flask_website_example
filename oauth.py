@@ -31,7 +31,7 @@ class OAuthSignIn(object):
 
 class FacebookSignIn(OAuthSignIn):
     def __init__(self):
-        super(FacebookSignIn, self).__init__('facebook')
+        super().__init__('facebook')
         self.service = OAuth2Service(
             name='facebook',
             client_id=self.consumer_id,
@@ -57,17 +57,19 @@ class FacebookSignIn(OAuthSignIn):
                   'redirect_uri': self.get_callback_url()}
         )
         me = oauth_session.get('me').json()
+        print(me['id'])
         return (
             'facebook$' + me['id'],
-            me.get('email').split('@')[0],  # Facebook does not provide
+            # JON: Facebook doesn't give the email now: http://stackoverflow.com/questions/32001609/cant-get-facebook-email
+            #me.get('email').split('@')[0],  # Facebook does not provide
                                             # username, so the email's user
                                             # is used instead
-            me.get('email')
+            #me.get('email')
         )
 
 class TwitterSignIn(OAuthSignIn):
     def __init__(self):
-        super(TwitterSignIn, self).__init__('twitter')
+        super().__init__('twitter')
         self.service = OAuth1Service(
             name='twitter',
             consumer_key=self.consumer_id,
