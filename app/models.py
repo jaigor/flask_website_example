@@ -1,9 +1,6 @@
-from app import db
-from flask import Flask, redirect, render_template
-from flask_sqlalchemy import SQLAlchemy
+from app import db, lm
 # dependencies for OAuth Autenthification
 from flask_login import UserMixin
-from oauth import OAuthSignIn
 
 class User(UserMixin, db.Model):
     __tablename__ = 'users'
@@ -12,7 +9,8 @@ class User(UserMixin, db.Model):
     # User id from the provider service
     social_id = db.Column(db.String(64), nullable=False, unique=True)
     nickname = db.Column(db.String(64), nullable=False)
-    email = db.Column(db.String(64), nullable=True) 
+    email = db.Column(db.String(64), nullable=True)
+
     # User Relationships
     # relationship between Post and User, backref used as a reference in Post()
     posts = db.relationship('Post', backref='author', lazy='dynamic') 
@@ -29,3 +27,8 @@ class Post(db.Model):
 
     def __repr__(self):
         return '<Post %r>' % (self.body)
+
+# user loader callback function
+@lm.user_loader
+def load_user(id):
+    return User.query.get(int(id))
