@@ -1,14 +1,10 @@
 from flask import render_template, flash, redirect, url_for
-from app import app, lm
+from app import app, db
 from .models import User
 from .forms import LoginForm
 from flask_login import login_user, logout_user, current_user
 from oauth import OAuthSignIn
 
-# user loader callback function
-@lm.user_loader
-def load_user(id):
-    return User.query.get(int(id))
 
 @app.route('/')
 @app.route('/index')
@@ -52,10 +48,13 @@ def oauth_callback(provider):
         return redirect(url_for('index'))
     oauth = OAuthSignIn.get_provider(provider)
     social_id, username, email = oauth.callback()
+
     if social_id is None:
         flash('Authentication failed.')
         return redirect(url_for('index'))
+
     user = User.query.filter_by(social_id=social_id).first()
+
     if not user:
         user = User(social_id=social_id, nickname=username, email=email)
         db.session.add(user)

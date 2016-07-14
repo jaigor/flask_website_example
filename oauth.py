@@ -1,4 +1,5 @@
-from rauth import OAuth1Service, OAuth2Service
+# OAuth1 used for Twitter and OAuth2 for Facebook
+from rauth import OAuth1Service, OAuth2Service 
 from flask import current_app, url_for, request, redirect, session
 
 
@@ -100,4 +101,5 @@ class TwitterSignIn(OAuthSignIn):
         me = oauth_session.get('account/verify_credentials.json').json()
         social_id = 'twitter$' + str(me.get('id'))
         username = me.get('screen_name')
-        return social_id, username, None   # Twitter does not provide email
+        email = "Not provided email"
+        return social_id, username, email   # Twitter does not provide email
