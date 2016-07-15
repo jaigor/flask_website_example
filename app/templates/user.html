@@ -1,0 +1,16 @@
+<!-- extend base layout -->
+{% extends "base.html" %}
+
+{% block content %}
+  <div style="width:300px; height:300px;">
+  <img src="{{ user.picture }}" height="75%" width="75%">
+  <h1>User: {{ current_user.nickname }}!</h1>
+  </div>
+  <ul>
+  {% for post in posts %}
+  <li>
+    {{ post.author.nickname }} says: <b>{{ post.body }}</b>
+  </li>
+  {% endfor %}
+  </ul>
+{% endblock %}

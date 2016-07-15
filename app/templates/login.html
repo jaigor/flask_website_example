@@ -3,6 +3,7 @@
 
 {% block content %}
   <h2>Sign In</h2>
-  <p>Please log in to access this page: </p>
+   <p><a href="{{ url_for('oauth_authorize', provider='facebook') }}">Sign it with Facebook</a></p>
+   <p><a href="{{ url_for('oauth_authorize', provider='twitter') }}">Sign it with Twitter</a></p>
 
 {% endblock %}

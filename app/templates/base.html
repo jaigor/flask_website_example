@@ -12,6 +12,10 @@
             <p><b>Error</b>: {{ message }}</p>
         {% endfor %}
         <a href="{{ url_for('index') }}">Home</a>
+        {% if current_user.is_authenticated %}
+        | <a href="{{ url_for('user', nickname=current_user.nickname) }}">Your Profile</a>
+        | <a href="{{ url_for('logout') }}">Logout</a>
+        {% endif %}
     </div>
     <hr>
     {% block content %}{% endblock %}

@@ -2,7 +2,6 @@
 from rauth import OAuth1Service, OAuth2Service 
 from flask import current_app, url_for, request, redirect, session
 
-
 class OAuthSignIn(object):
     providers = None
 
@@ -53,20 +52,26 @@ class FacebookSignIn(OAuthSignIn):
 
     def callback(self):
         if 'code' not in request.args:
-            return None, None, None
-        oauth_session = self.service.get_auth_session(
-            data={'code': request.args['code'],
-                  'grant_type': 'authorization_code',
-                  'redirect_uri': self.get_callback_url()}
-        )
-        me = oauth_session.get('me?fields=id,email').json()
+            return None, None, None, None
+        me = self.load_oauth_session()
         return (
             'facebook$' + me['id'],
             me.get('email').split('@')[0],  # Facebook does not provide
                                             # username, so the email's user
                                             # is used instead
-            me.get('email')
+            me.get('email'),
+            me.get('picture').get('data').get('url')
         )
+
+    def load_oauth_session(self):
+        oauth_session = self.service.get_auth_session(
+            data={'code': request.args['code'],
+                  'grant_type': 'authorization_code',
+                  'redirect_uri': self.get_callback_url()}
+        )
+        me = oauth_session.get('me?fields=id,email,picture.width(500).height(500)').json()
+        print (me.get('picture'))
+        return me
 
 
 class TwitterSignIn(OAuthSignIn):
