@@ -12,9 +12,11 @@ class User(UserMixin, db.Model):
     nickname = db.Column(db.String(64), nullable=False)
     email = db.Column(db.String(64), nullable=True)
     picture = db.Column(db.String(256), nullable=True)
+    about_me = db.Column(db.String(140))
+    last_seen = db.Column(db.DateTime)
     # User Relationships
     # relationship between Post and User, backref used as a reference in Post()
-    posts = db.relationship('Post', backref='author', lazy='dynamic') 
+    posts = db.relationship('Post', backref='author', lazy='dynamic')
 
     def __repr__(self):
         return '<User %r>' % (self.nickname)

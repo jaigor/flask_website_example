@@ -1,0 +1,17 @@
+<!-- extend base layout -->
+{% extends "base.html" %}
+
+{% block content %}
+  <h1>Edit Your Profile</h1>
+  <div>
+    <form action="" method="post" name="edit">
+        {{form.hidden_tag()}}
+        <label for="nickname">Your nickname:</label>
+        {{ form.nickname(size=24) }}
+        <label for="about_me">About yourself:</label>
+        {{ form.about_me(cols=32, rows=4) }}
+
+        <p><input type="submit" value="Save Changes"></p>
+    </form>
+  </div>
+{% endblock %}

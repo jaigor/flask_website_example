@@ -1,10 +1,10 @@
 from flask import render_template, flash, redirect, url_for
 from app import app, db
 from .models import User
-from .forms import LoginForm
+from .forms import EditForm
 from flask_login import login_user, logout_user, current_user, login_required
 from oauth import OAuthSignIn
-
+from datetime import datetime
 
 @app.route('/')
 @app.route('/index')
@@ -30,6 +30,12 @@ def index():
 def login():
     return render_template('login.html', 
                            title='Sign In')
+@app.before_request
+def before_request():
+    if current_user.is_authenticated:
+        current_user.last_seen = datetime.utcnow()
+        db.session.add(current_user)
+        db.session.commit()
 
 @app.route('/logout')
 def logout():
@@ -47,13 +53,14 @@ def oauth_authorize(provider):
 def oauth_callback(provider):
     if not current_user.is_anonymous:
         return redirect(url_for('index'))
+
     oauth = OAuthSignIn.get_provider(provider)
     social_id, username, email, picture = oauth.callback()
+    user = instance_user(social_id)
+
     if social_id is None:
         flash('Authentication failed.')
         return redirect(url_for('index'))
-
-    user = User.query.filter_by(social_id=social_id).first()
 
     if not user:
         user = User(social_id=social_id, 
@@ -62,9 +69,19 @@ def oauth_callback(provider):
                     picture=picture)
         db.session.add(user)
         db.session.commit()
+    else:
+        # update Database with logged user
+        user.username = username
+        user.email = email
+        user.picture = picture
+        db.session.commit()
+
     # Login and validate the user
     login_user(user, True)
     return redirect(url_for('index'))
+
+def instance_user(social_id):
+    return User.query.filter_by(social_id=social_id).first()
 
 @app.route('/user/<nickname>')
 @login_required # make the user be logged on the website
@@ -80,3 +97,19 @@ def user(nickname):
     return render_template('user.html',
                             user=user,
                             posts=posts)
+
+@app.route('/edit', methods=['GET', 'POST'])
+@login_required
+def edit():
+    form = EditForm()
+    if form.validate_on_submit():
+        current_user.nickname = form.nickname.data
+        current_user.about_me = form.about_me.data
+        db.session.add(current_user)
+        db.session.commit()
+        flash('Your changes have been saved.')
+        return redirect(url_for('edit'))
+    else:
+        form.nickname.data = current_user.nickname
+        form.about_me.data = current_user.about_me
+    return render_template('edit.html', form=form)

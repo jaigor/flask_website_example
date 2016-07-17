@@ -69,8 +69,7 @@ class FacebookSignIn(OAuthSignIn):
                   'grant_type': 'authorization_code',
                   'redirect_uri': self.get_callback_url()}
         )
-        me = oauth_session.get('me?fields=id,email,picture.width(500).height(500)').json()
-        print (me.get('picture'))
+        me = oauth_session.get('me?fields=id,email,picture').json()
         return me
 
 
@@ -97,7 +96,7 @@ class TwitterSignIn(OAuthSignIn):
     def callback(self):
         request_token = session.pop('request_token')
         if 'oauth_verifier' not in request.args:
-            return None, None, None
+            return None, None, None, None
         oauth_session = self.service.get_auth_session(
             request_token[0],
             request_token[1],
@@ -107,4 +106,5 @@ class TwitterSignIn(OAuthSignIn):
         social_id = 'twitter$' + str(me.get('id'))
         username = me.get('screen_name')
         email = "Not provided email"
-        return social_id, username, email   # Twitter does not provide email
+        picture = 'http://www.gravatar.com/avatar/?d=mm' # not implemented photo, used default gravatar 
+        return social_id, username, email, picture   # Twitter does not provide email
