@@ -3,8 +3,8 @@
 
 {% block content %}
   <h1>User: {{ current_user.nickname }}!</h1>
-  <div style="width:35%; height:35%;">
-    <p><img src="{{ user.picture }}" style="height:75%; width:75%; object-fit:contain" align="left">
+  <div style="width:40%;height:20%">
+    <p><img src="{{ user.picture }}" style="width:20%;" align="left">
     {% if current_user.about_me %} 
       <p>{{ current_user.about_me}}</p>
     {% endif %}
@@ -17,7 +17,9 @@
     </p>
   </div>
   <hr>
-  {% for post in posts %}
-      {% include 'post.html' %}
-  {% endfor %}
+  <diV>
+    {% for post in posts %}
+        {% include 'post.html' %}
+    {% endfor %}
+  </diV>
 {% endblock %}

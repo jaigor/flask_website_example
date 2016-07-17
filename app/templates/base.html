@@ -9,7 +9,7 @@
   <body>
     <div>Microblog:
         {% for message in get_flashed_messages() %}
-            <p><b>Error</b>: {{ message }}</p>
+            <p><b>Information: </b>: {{ message }}</p>
         {% endfor %}
         <a href="{{ url_for('index') }}">Home</a>
         {% if current_user.is_authenticated %}
