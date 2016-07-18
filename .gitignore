@@ -11,6 +11,9 @@ app.db
 # Config codes
 config.py
 
+# Logs
+tmp/
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]

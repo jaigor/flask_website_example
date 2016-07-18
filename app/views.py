@@ -98,6 +98,7 @@ def user(nickname):
                             user=user,
                             posts=posts)
 
+# Edit user profile form 
 @app.route('/edit', methods=['GET', 'POST'])
 @login_required
 def edit():
@@ -113,3 +114,13 @@ def edit():
         form.nickname.data = current_user.nickname
         form.about_me.data = current_user.about_me
     return render_template('edit.html', form=form)
+
+# Custom HTTP Handlers: 404 and 500 
+@app.errorhandler(404)
+def not_found_error(error):
+    return render_template('404.html'), 404
+
+@app.errorhandler(500)
+def internal_error(error):
+    db.session.rollback()
+    return render_template('500.html'), 500

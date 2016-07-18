@@ -21,3 +21,12 @@ OAUTH_CREDENTIALS = {
         'secret': 'TWITTER APP SECRET ASSIGNED'
     }
 }
+
+# mail server settings (configuration depends on the server to use (SMTP, POP3, ...))
+MAIL_SERVER = 'localhost'
+MAIL_PORT = 25
+MAIL_USERNAME = None
+MAIL_PASSWORD = None
+
+# administrator list
+ADMINS = ['you@example.com']
