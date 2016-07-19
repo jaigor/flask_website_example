@@ -23,10 +23,13 @@ OAUTH_CREDENTIALS = {
 }
 
 # mail server settings (configuration depends on the server to use (SMTP, POP3, ...))
-MAIL_SERVER = 'localhost'
-MAIL_PORT = 25
-MAIL_USERNAME = None
-MAIL_PASSWORD = None
+# Gmail example
+MAIL_SERVER = os.environ.get('MAIL_SERVER','smtp.gmail.com')
+MAIL_PORT = int(os.environ.get('MAIL_PORT', '465'))
+MAIL_USE_TLS = int(os.environ.get('MAIL_USE_TLS',  False))
+MAIL_USE_SSL = int(os.environ.get('MAIL_USE_SSL',  True))
+MAIL_USERNAME = os.environ.get('MAIL_USERNAME','username@gmail.com')
+MAIL_PASSWORD = os.environ.get('MAIL_PASSWORD','password')
 
 # administrator list
 ADMINS = ['you@example.com']

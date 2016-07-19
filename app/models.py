@@ -23,6 +23,8 @@ class User(UserMixin, db.Model):
 
     @staticmethod
     def make_unique_nickname(nickname):
+        """"Makes a new name for a used nickname
+            It adds numbers of the versions that we are counting"""
         if User.query.filter_by(nickname=nickname).first() is None:
             return nickname
         version = 2

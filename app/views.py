@@ -54,24 +54,33 @@ def oauth_callback(provider):
     if not current_user.is_anonymous:
         return redirect(url_for('index'))
 
+    # call provider (Facebook, Twitter, ...)
     oauth = OAuthSignIn.get_provider(provider)
+    # assigns values to parameters
     social_id, username, email, picture = oauth.callback()
     user = instance_user(social_id)
 
+    # fails the authentication method
     if social_id is None:
         flash('Authentication failed.')
         return redirect(url_for('index'))
 
     if not user:
+        if instance_username(username):
+            # If username exits looks for another 
+            username = User.make_unique_nickname(username)
+        else:
+            pass    
+        # Instances new user in database
         user = User(social_id=social_id, 
-                    nickname=username, 
-                    email=email,
-                    picture=picture)
+                        nickname=username, 
+                        email=email,
+                        picture=picture)
         db.session.add(user)
         db.session.commit()
     else:
         # update Database with logged user
-        user.username = username
+        user.username = user.make_unique_nickname(username)
         user.email = email
         user.picture = picture
         db.session.commit()
@@ -81,7 +90,12 @@ def oauth_callback(provider):
     return redirect(url_for('index'))
 
 def instance_user(social_id):
+    """ Search for the user (social_id) in the database"""
     return User.query.filter_by(social_id=social_id).first()
+
+def instance_username(username):
+    """ Search for the user (username) in the database"""
+    return User.query.filter_by(username=username).first()
 
 @app.route('/user/<nickname>')
 @login_required # make the user be logged on the website
@@ -104,7 +118,9 @@ def user(nickname):
 def edit():
     form = EditForm()
     if form.validate_on_submit():
-        current_user.nickname = form.nickname.data
+        new_nickname = User.make_unique_nickname(form.nickname.data)
+        print "sdsd"
+        current_user.nickname = new_nickname
         current_user.about_me = form.about_me.data
         db.session.add(current_user)
         db.session.commit()
