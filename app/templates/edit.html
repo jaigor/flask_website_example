@@ -7,7 +7,10 @@
     <form action="" method="post" name="edit">
         {{form.hidden_tag()}}
         <p><label for="nickname">Your nickname:</label>
-        {{ form.nickname(size=24) }}</p>
+        {{ form.nickname(size=24) }}
+        {% for error in form.errors.nickname %}
+          <br><span style="color: red;">[{{ error }}]</span>
+        {% endfor %}</p>        
         <p><label for="about_me">About yourself:</label>
         {{ form.about_me(cols=32, rows=4) }}</p>
 

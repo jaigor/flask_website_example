@@ -80,7 +80,7 @@ def oauth_callback(provider):
         db.session.commit()
     else:
         # update Database with logged user
-        user.username = user.make_unique_nickname(username)
+        user.nickname = user.make_unique_nickname(username)
         user.email = email
         user.picture = picture
         db.session.commit()
@@ -95,7 +95,7 @@ def instance_user(social_id):
 
 def instance_username(username):
     """ Search for the user (username) in the database"""
-    return User.query.filter_by(username=username).first()
+    return User.query.filter_by(nickname=username).first()
 
 @app.route('/user/<nickname>')
 @login_required # make the user be logged on the website
@@ -116,10 +116,9 @@ def user(nickname):
 @app.route('/edit', methods=['GET', 'POST'])
 @login_required
 def edit():
-    form = EditForm()
+    form = EditForm(current_user.nickname)
     if form.validate_on_submit():
         new_nickname = User.make_unique_nickname(form.nickname.data)
-        print "sdsd"
         current_user.nickname = new_nickname
         current_user.about_me = form.about_me.data
         db.session.add(current_user)
