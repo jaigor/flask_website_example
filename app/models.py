@@ -21,6 +21,10 @@ class User(UserMixin, db.Model):
     def __repr__(self):
         return '<User %r>' % (self.nickname)
 
+    def default_picture(picture):
+        if self.picture == None:
+            self.picture = 'http://www.gravatar.com/avatar/?d=mm'
+
     @staticmethod
     def make_unique_nickname(nickname):
         """"Makes a new name for a used nickname

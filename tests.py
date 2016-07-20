@@ -19,10 +19,9 @@ class TestCase(unittest.TestCase):
         db.drop_all()
 
     def test_picture(self):
-        u = User.query.filter_by(nickname='open_xrijbbo_user').first() #Facebook test user
-        print (u)
-        picture = u.picture
-        expected = 'https://scontent.xx.fbcdn.net/t31.0-1/c212.0.720.720/p720x720/10506738_10150004552801856_220367501106153455_o.jpg'
+        u = User(social_id='twitter_user', nickname='twitter_user', email='twitter@mail.com') # no picture user
+        picture = u.default_picture() 
+        expected = 'http://www.gravatar.com/avatar/?d=mm'
         assert picture[0:len(expected)] == expected
 
     def test_make_unique_nickname(self):
