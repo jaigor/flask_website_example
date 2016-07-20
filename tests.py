@@ -19,10 +19,15 @@ class TestCase(unittest.TestCase):
         db.drop_all()
 
     def test_picture(self):
-        u = User(social_id='twitter_user', nickname='twitter_user', email='twitter@mail.com') # no picture user
-        picture = u.default_picture() 
+        # no picture user
+        u = User(social_id='twitter_user', 
+                    nickname='twitter_user', 
+                    email='twitter@mail.com',
+                    picture=None)
+        yo = (u.picture)
+        pic = u.default_picture(None)
         expected = 'http://www.gravatar.com/avatar/?d=mm'
-        assert picture[0:len(expected)] == expected
+        assert pic[0:len(expected)] == expected
 
     def test_make_unique_nickname(self):
         u = User(nickname='john', email='john@example.com')
