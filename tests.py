@@ -24,18 +24,17 @@ class TestCase(unittest.TestCase):
                     nickname='twitter_user', 
                     email='twitter@mail.com',
                     picture=None)
-        yo = (u.picture)
-        pic = u.default_picture(None)
+        pic = User.default_picture(u.picture)
         expected = 'http://www.gravatar.com/avatar/?d=mm'
         assert pic[0:len(expected)] == expected
 
     def test_make_unique_nickname(self):
-        u = User(nickname='john', email='john@example.com')
+        u = User(social_id='john_id', nickname='john', email='john@example.com')
         db.session.add(u)
         db.session.commit()
         nickname = User.make_unique_nickname('john')
         assert nickname != 'john'
-        u = User(nickname=nickname, email='susan@example.com')
+        u = User(social_id='susan_id', nickname=nickname, email='susan@example.com')
         db.session.add(u)
         db.session.commit()
         nickname2 = User.make_unique_nickname('john')

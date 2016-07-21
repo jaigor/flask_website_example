@@ -106,5 +106,5 @@ class TwitterSignIn(OAuthSignIn):
         social_id = 'twitter$' + str(me.get('id'))
         username = me.get('screen_name')
         email = "Not provided email"
-        picture = 'http://www.gravatar.com/avatar/?d=mm' # not implemented photo, used default gravatar 
+        picture = None # not implemented photo, used default gravatar 
         return social_id, username, email, picture   # Twitter does not provide email

@@ -76,13 +76,14 @@ def oauth_callback(provider):
                         nickname=username, 
                         email=email,
                         picture=picture)
+        user.picture = User.default_picture(picture)
         db.session.add(user)
         db.session.commit()
     else:
         # update Database with logged user
         user.nickname = user.make_unique_nickname(username)
         user.email = email
-        user.picture = picture
+        user.picture = User.default_picture(picture)
         db.session.commit()
 
     # Login and validate the user

@@ -3,6 +3,12 @@ from app import db, lm
 from flask_login import UserMixin
 from oauth import FacebookSignIn
 
+# Table of followers
+followers = db.Table('followers',
+    db.Column('follower_id', db.Integer, db.ForeignKey('users.id')),
+    db.Column('followed_id', db.Integer, db.ForeignKey('users.id'))
+)
+
 class User(UserMixin, db.Model):
     """User Basic Information model."""
     __tablename__ = 'users'
@@ -15,16 +21,25 @@ class User(UserMixin, db.Model):
     about_me = db.Column(db.String(140))
     last_seen = db.Column(db.DateTime)
     # User Relationships
-    # relationship between Post and User, backref used as a reference in Post()
-    posts = db.relationship('Post', backref='author', lazy='dynamic')
+    # Post and User (one-to-many)
+    posts = db.relationship('Post', 
+                            backref='author', # = used as a reference in Post()
+                            lazy='dynamic')
+    # User to User (many-to-many)
+    followed = db.relationship('User',
+                                secondary=followers, # = table referred, 
+                                primaryjoin=(followers.c.follower_id == id), # links left side with association table
+                                secondaryjoin=(followers.c.followed_id == id), # links association table with right side
+                                backref=db.backref('followers', lazy='dynamic'), # how this relationship will be accessed from the right side
+                                lazy='dynamic')
 
     def __repr__(self):
         return '<User %r>' % (self.nickname)
 
     def default_picture(picture):
+        """Assigns a default picture if there is None returned"""
         if picture == None:
             picture = 'http://www.gravatar.com/avatar/?d=mm'
-        
         return picture
 
     @staticmethod
@@ -40,6 +55,19 @@ class User(UserMixin, db.Model):
                 break
             version += 1
         return new_nickname
+
+    def follow(self, user):
+        if not self.is_following(user):
+            self.followed.append(user)
+            return self
+
+    def unfollow(self, user):
+        if self.is_following(user):
+            self.followed.remove(user)
+            return self
+            
+    def is_following(self, user):
+        return self.followed.filter(followers.c.followed_id == user.id).count() > 0
 
 class Post(db.Model):
     """User Posts model."""
