@@ -69,6 +69,9 @@ class User(UserMixin, db.Model):
     def is_following(self, user):
         return self.followed.filter(followers.c.followed_id == user.id).count() > 0
 
+    def followed_posts(self):
+        return Post.query.join(followers,(followers.c.followed_id == Post.user_id)).filter(followers.c.follower_id == self.id).order_by(Post.timestamp.desc())
+
 class Post(db.Model):
     """User Posts model."""
     __tablename__ = 'posts'
@@ -81,6 +84,6 @@ class Post(db.Model):
         return '<Post %r>' % (self.body)
 
 # user loader callback function
-@lm.user_loader
+@lm.user_loader 
 def load_user(id):
     return User.query.get(int(id))
