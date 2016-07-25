@@ -16,12 +16,23 @@
             </p>
             <p><input type="submit" value="Post!"></p>
         </form>
-        <h2> List of website posts </h2>
-        <ul>
-        {% for post in posts %}
-    		<div><li>{{ post.author.nickname }} says: <b>{{ post.body }}</b></li></div>
+        <h2> List of posts </h2>
+        <!-- posts is a Paginate object -->
+        {% for post in posts.items %}
+    		{% include 'post.html' %}
     	{% endfor %}
-        </ul>
+        <!-- Newer or Older posts -->
+        {% if posts.has_prev %}
+            <a href="{{ url_for('index', page=posts.prev_num) }}">&lt;&lt; Newer posts</a>
+        {% else %}
+            &lt;&lt; Newer posts
+        {% endif %} | 
+        {% if posts.has_next %}
+            <a href="{{ url_for('index', page=posts.next_num) }}">Older posts &gt;&gt;</a>
+        {% else %}
+            Older posts &gt;&gt;
+        {% endif %}
+
     {% else %}
         <h2>You are not logged in!</h2>
         <p><a href="{{ url_for('oauth_authorize', provider='facebook') }}">Sign it with Facebook</a></p>
