@@ -6,6 +6,7 @@ from flask_login import login_user, logout_user, current_user, login_required
 from oauth import OAuthSignIn
 from datetime import datetime
 from config import POSTS_PER_PAGE
+from .emails import follower_notification
 
 @app.route('/', methods=['GET', 'POST'])
 @app.route('/index', methods=['GET', 'POST'])
@@ -102,16 +103,15 @@ def instance_username(username):
     return User.query.filter_by(nickname=username).first()
 
 @app.route('/user/<nickname>')
+@app.route('/user/<nickname>/<int:page>')
 @login_required # make the user be logged on the website
-def user(nickname):
+def user(nickname, page=1):
     user = User.query.filter_by(nickname=nickname).first()
     if user == None:
         flash('User %s not found.' % nickname)
         return redirect(url_for('index'))
-    posts = [
-        {'author': user, 'body': 'Test post #1'},
-        {'author': user, 'body': 'Test post #2'}
-    ]
+    posts = user.posts.paginate(page, POSTS_PER_PAGE, False)
+    
     return render_template('user.html',
                             user=user,
                             posts=posts)
@@ -122,7 +122,11 @@ def user(nickname):
 def edit():
     form = EditForm(current_user.nickname)
     if form.validate_on_submit():
-        new_nickname = User.make_unique_nickname(form.nickname.data)
+        # checks if the username didnt change
+        if form.nickname.data == current_user.nickname:
+            new_nickname = current_user.nickname
+        else:
+            new_nickname = User.make_unique_nickname(form.nickname.data)
         current_user.nickname = new_nickname
         current_user.about_me = form.about_me.data
         db.session.add(current_user)
@@ -162,6 +166,7 @@ def follow(nickname):
     db.session.add(u)
     db.session.commit()
     flash('You are now following ' + nickname + '!')
+    follower_notification(user, current_user)
     return redirect(url_for('user', nickname=nickname))
 
 @app.route('/unfollow/<nickname>')

@@ -1,7 +1,15 @@
-from app import db, lm
+from app import db, lm, app
 # dependencies for OAuth Autenthification
 from flask_login import UserMixin
 from oauth import FacebookSignIn
+
+import sys
+# if version is 3 or newer, cant use search tool
+if sys.version_info >= (3,0):
+    enable_search = False
+else:
+    enable_search = True
+    import flask_whooshalchemy as whooshalchemy
 
 # Table of followers
 followers = db.Table('followers',
@@ -75,13 +83,17 @@ class User(UserMixin, db.Model):
 class Post(db.Model):
     """User Posts model."""
     __tablename__ = 'posts'
-    id = db.Column(db.Integer, primary_key = True)
+    __searchable__ = ['body'] # field indexed by whoosh
+    id = db.Column(db.Integer, primary_key=True)
     body = db.Column(db.String(140))
     timestamp = db.Column(db.DateTime) # all in UTC time zone
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
 
     def __repr__(self):
         return '<Post %r>' % (self.body)
+
+if enable_search:
+    whooshalchemy.whoosh_index(app, Post)
 
 # user loader callback function
 @lm.user_loader 
