@@ -18,7 +18,7 @@ def index(page=1):
         post = Post(body=form.post.data, timestamp=datetime.utcnow(), author=current_user)
         db.session.add(post)
         db.session.commit()
-        flash('Your post is now live!')
+        flash(u'Your post is now live!','info')
         return redirect(url_for('index'))
 
     posts = current_user.followed_posts().paginate(page, POSTS_PER_PAGE, False)
@@ -64,7 +64,7 @@ def oauth_callback(provider):
 
     # fails the authentication method
     if social_id is None:
-        flash('Authentication failed.')
+        flash(u'Authentication failed.','error')
         return redirect(url_for('index'))
 
     print (not user)
@@ -108,7 +108,7 @@ def instance_username(username):
 def user(nickname, page=1):
     user = User.query.filter_by(nickname=nickname).first()
     if user == None:
-        flash('User %s not found.' % nickname)
+        flash(u'User %s not found.' % nickname, 'error')
         return redirect(url_for('index'))
     posts = user.posts.paginate(page, POSTS_PER_PAGE, False)
     
@@ -131,7 +131,7 @@ def edit():
         current_user.about_me = form.about_me.data
         db.session.add(current_user)
         db.session.commit()
-        flash('Your changes have been saved.')
+        flash(u'Your changes have been saved.', 'info') # alert correct message
         return redirect(url_for('edit'))
     else:
         form.nickname.data = current_user.nickname
@@ -154,18 +154,18 @@ def internal_error(error):
 def follow(nickname):
     user = User.query.filter_by(nickname=nickname).first()
     if user is None:
-        flash('User %s not found.' % nickname)
+        flash(u'User %s not found.' % nickname, 'error') # alert wrong message
         return redirect(url_for('index'))
     if user == current_user:
-        flash('You can\'t follow yourself!')
+        flash(u'You can\'t follow yourself!', 'error')
         return redirect(url_for('user', nickname=nickname))
     u = current_user.follow(user)
     if u is None:
-        flash('Cannot follow ' + nickname + '.')
+        flash(u'Cannot follow ' + nickname + '.', 'error')
         return redirect(url_for('user', nickname=nickname))
     db.session.add(u)
     db.session.commit()
-    flash('You are now following ' + nickname + '!')
+    flash(u'You are now following ' + nickname + '!', 'info')
     follower_notification(user, current_user)
     return redirect(url_for('user', nickname=nickname))
 
@@ -174,16 +174,16 @@ def follow(nickname):
 def unfollow(nickname):
     user = User.query.filter_by(nickname=nickname).first()
     if user is None:
-        flash('User %s not found.' % nickname)
+        flash(u'User %s not found.' % nickname, 'error')
         return redirect(url_for('index'))
     if user == current_user:
-        flash('You can\'t unfollow yourself!')
+        flash(u'You can\'t unfollow yourself!', 'error')
         return redirect(url_for('user', nickname=nickname))
     u = current_user.unfollow(user)
     if u is None:
-        flash('Cannot unfollow ' + nickname + '.')
+        flash(u'Cannot unfollow ' + nickname + '.', 'error')
         return redirect(url_for('user', nickname=nickname))
     db.session.add(u)
     db.session.commit()
-    flash('You have stopped following ' + nickname + '.')
+    flash(u'You have stopped following ' + nickname + '.', 'info')
     return redirect(url_for('user', nickname=nickname))

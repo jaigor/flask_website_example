@@ -14,23 +14,50 @@
   <body>
     <script src="http://code.jquery.com/jquery.js"></script>
     <script src="/static/js/bootstrap.min.js"></script>
+    {% with errors = get_flashed_messages(category_filter=["error"]) %}
+    {% if errors %}
+    <div class="alert alert-danger">
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        <ul>
+        {%- for msg in errors %}
+        <li><b>Error:</b> {{ msg }}</li>
+        {% endfor -%}
+        </ul>
+    </div>
+    {% endif %}
+    {% endwith %}
+    {% with infos = get_flashed_messages(category_filter=["info"]) %}
+    {% if infos %}
+    <div class="alert alert-success">
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        <ul>
+        {%- for msg in infos %}
+        <li><b>Info:</b> {{ msg }}</li>
+        {% endfor -%} 
+        </ul>
+    </div>
+    {% endif %}
+    {% endwith %}
+
     <nav class="navbar navbar-default">
         <div class="container">
             <div class="navbar-header">
-                <span class="navbar-brand">Microblog</span>
+                <a href="/index" class="navbar-brand">Microblog</a>
             </div>
 
             <!-- Collect the nav links, forms, and other content for toggling -->
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-                {% for message in get_flashed_messages() %}
-                    <b>Information: </b>: {{ message }}
-                {% endfor %}
                 <ol class="nav navbar-nav">
-                    <li class="active"><a href="{{ url_for('index') }}">Home</a></li>
-                        {% if current_user.is_authenticated %}
-                    <li><a href="{{ url_for('user', nickname=current_user.nickname) }}">Your Profile</a></li>
-                    <li><a href="{{ url_for('logout') }}">Logout</a></li>
-                {% endif %}
+                    <li class="active"><a href="{{ url_for('index') }}">Home</a>
+                    </li>
+                    {% if current_user.is_authenticated %}
+                    <li>
+                        <a href="{{ url_for('user', nickname=current_user.nickname) }}">Your Profile</a>
+                    </li>
+                    <li>
+                        <a href="{{ url_for('logout') }}">Logout</a>
+                    </li>
+                    {% endif %}
                 </ol>
             </div> 
             <!--Body content-->

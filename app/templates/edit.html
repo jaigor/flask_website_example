@@ -2,19 +2,30 @@
 {% extends "base.html" %}
 
 {% block content %}
-  <h1>Edit Your Profile</h1>
-  <div>
-    <form action="" method="post" name="edit">
+<h1>Edit Your Profile</h1>
+  <form class="form-horizontal" action="" method="post" name="edit">
+      <div class="control-group">
         {{form.hidden_tag()}}
-        <p><label for="nickname">Your nickname:</label>
-        {{ form.nickname(size=24) }}
+        <label class="control-label" for="nickname">Your nickname:</label>
+        <div class="controls">
+          {{ form.nickname(size=24) }}
+        </div>
         {% for error in form.errors.nickname %}
-          <br><span style="color: red;">[{{ error }}]</span>
-        {% endfor %}</p>        
-        <p><label for="about_me">About yourself:</label>
-        {{ form.about_me(cols=32, rows=4) }}</p>
-
-        <p><input type="submit" value="Save Changes"></p>
-    </form>
-  </div>
+        <div class="alert alert-danger">
+          <br><b>[{{ error }}]</b>
+        </div>
+        {% endfor %}
+      </div>
+      <div class="control-group">     
+          <label class="control-label" for="about_me">About yourself:</label>
+          <div class="controls">
+            {{ form.about_me(cols=32, rows=4) }}
+          </div>
+      </div>
+      <div class="control-group">
+        <div class="controls">
+          <button type="submit" class="btn">Save Changes</button>
+        </div>
+      </div>
+  </form>
 {% endblock %}
