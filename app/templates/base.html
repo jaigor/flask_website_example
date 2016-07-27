@@ -6,14 +6,15 @@
     {% else %}
     <title>microblog</title>
     {% endif %}
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- Bootstrap -->
     <link href="/static/css/bootstrap.min.css" rel="stylesheet" media="screen">
-    <link href="assets/css/bootstrap-responsive.css" rel="stylesheet">
-  </head>
-  <body>
+    <link href="/static/css/bootstrap-responsive.css" rel="stylesheet">
     <script src="http://code.jquery.com/jquery.js"></script>
     <script src="/static/js/bootstrap.min.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  </head>
+  <body>
+    <!--Error handler-->
     {% with errors = get_flashed_messages(category_filter=["error"]) %}
     {% if errors %}
     <div class="alert alert-danger">
@@ -38,30 +39,30 @@
     </div>
     {% endif %}
     {% endwith %}
-
+    <!--Menu bar-->
     <nav class="navbar navbar-default">
-        <div class="container">
+        <div class="container-fluid">
             <div class="navbar-header">
-                <a href="/index" class="navbar-brand">Microblog</a>
+                <a href="/index" class="brand">Microblog</a>
             </div>
-
-            <!-- Collect the nav links, forms, and other content for toggling -->
-            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-                <ol class="nav navbar-nav">
-                    <li class="active"><a href="{{ url_for('index') }}">Home</a>
-                    </li>
-                    {% if current_user.is_authenticated %}
-                    <li>
-                        <a href="{{ url_for('user', nickname=current_user.nickname) }}">Your Profile</a>
-                    </li>
-                    <li>
-                        <a href="{{ url_for('logout') }}">Logout</a>
-                    </li>
-                    {% endif %}
-                </ol>
-            </div> 
-            <!--Body content-->
-            {% block content %}{% endblock %}
+            <ol class="nav navbar-nav">
+                <li {%- if request.path == "/index" %} class="active"{% endif %}>
+                    <a href="{{ url_for('index') }}">Home</a>
+                </li>
+                {% if current_user.is_authenticated %}
+                <li {%- if request.path == (url_for('user', nickname=current_user.nickname)) %} class="active"{% endif %}>
+                    <a href="{{ url_for('user', nickname=current_user.nickname) }}">Your Profile</a>
+                </li>
+                <li>
+                    <a href="{{ url_for('logout') }}">Logout</a>
+                </li>
+                {% endif %}
+            </ol>
         </div>
+    </nav>
+    <!--Body content -->
+    <div class="container">
+        {% block content %}{% endblock %}
+    </div>
   </body>
 </html>

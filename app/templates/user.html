@@ -4,7 +4,7 @@
 {% block content %}
 <h1>User: {{ user.nickname }}!</h1>
   <div style="width:40%;height:20%">
-    <p><img src="{{ user.picture }}" style="width:20%;" align="left">
+    <p><img class="img-polaroid" src="{{ user.picture }}" style="width:20%;" align="left">
     {% if user.about_me %} 
     <p>{{ user.about_me}}</p>
     {% else %}

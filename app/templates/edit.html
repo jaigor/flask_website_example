@@ -12,7 +12,7 @@
         </div>
         {% for error in form.errors.nickname %}
         <div class="alert alert-danger">
-          <br><b>[{{ error }}]</b>
+          <b>Error: </b> {{ error }}
         </div>
         {% endfor %}
       </div>

@@ -1,4 +1,4 @@
-from flask import render_template, flash, redirect, url_for
+from flask import render_template, flash, redirect, url_for, request
 from app import app, db
 from .models import User, Post
 from .forms import EditForm, PostForm
@@ -7,6 +7,7 @@ from oauth import OAuthSignIn
 from datetime import datetime
 from config import POSTS_PER_PAGE
 from .emails import follower_notification
+
 
 @app.route('/', methods=['GET', 'POST'])
 @app.route('/index', methods=['GET', 'POST'])
@@ -26,7 +27,8 @@ def index(page=1):
     return render_template('index.html',
                            title='Home',
                            form=form,
-                           posts=posts)
+                           posts=posts,
+                           request=request)
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -114,7 +116,8 @@ def user(nickname, page=1):
     
     return render_template('user.html',
                             user=user,
-                            posts=posts)
+                            posts=posts,
+                            request=request)
 
 # Edit user profile form 
 @app.route('/edit', methods=['GET', 'POST'])
@@ -136,7 +139,8 @@ def edit():
     else:
         form.nickname.data = current_user.nickname
         form.about_me.data = current_user.about_me
-    return render_template('edit.html', form=form)
+    return render_template('edit.html', 
+                            form=form)
 
 # Custom HTTP Handlers: 404 and 500 
 @app.errorhandler(404)

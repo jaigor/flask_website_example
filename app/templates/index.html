@@ -5,16 +5,18 @@
         <p> your email is: {{ current_user.email }} </p>
         <p><a href="{{ url_for('logout') }}">Logout</a></p>
         <form action="" method="post" name="post">
-            {{ form.hidden_tag() }}
-            <p><label for="post">Say something:</label><br>
-                {{ form.post(size=30, maxlength=140) }}
-                   
+            <fieldset>
+                {{ form.hidden_tag() }}
+                <label for="post">Say something:</label>
+                {{ form.post(size=30, maxlength=140) }} 
                 {% for error in form.post.errors %}
-                <p><span style="color: red;">[{{ error }}]</span><br>
+                <div class="alert alert-danger">
+                    <b>Error: </b> {{ error }}
+                </div>
                 {% endfor %}
-                </p>
-            </p>
-            <p><input type="submit" value="Post!"></p>
+                <br>   
+                <button type="submit" class="btn">Post!</button>
+            </fieldset>
         </form>
         <h2> List of posts </h2>
         <!-- posts is a Paginate object -->
