@@ -5,6 +5,8 @@ from flask_login import LoginManager
 from config import basedir, ADMINS, MAIL_SERVER, MAIL_PORT, MAIL_USERNAME, MAIL_PASSWORD
 from flask_mail import Mail
 
+from .momentjs import momentjs
+
 # Instance the app and config.py file
 app = Flask(__name__)
 app.config.from_object('config')
@@ -36,5 +38,8 @@ if not app.debug:
     file_handler.setLevel(logging.INFO)
     app.logger.addHandler(file_handler)
     app.logger.info('microblog startup')
+
+    # importing library momentjs for timestamp, as a global variable to all templates
+    app.jinja_env.globals['momentjs'] = momentjs
 
 from app import views, models

@@ -1,4 +1,5 @@
 <div style="padding:5px">
     <img class="img-rounded" src="{{ post.author.picture }}" style="max-width:50px; max-height:auto;" align="left">
-    <p style="padding-left:65px"><i> {{ post.author.nickname }} says: </i> {{ post.body }}</p>
+    <p style="padding-left:65px"> <a href="{{ url_for('user', nickname=post.author.nickname) }}"> <span class="label label-primary">{{ post.author.nickname }}</span></a> said {{ momentjs(post.timestamp).fromNow() }} </p>
+    <p style="padding-left:65px"><i> {{ post.body }}</i> </p>
 </div>

@@ -3,7 +3,7 @@
 
 {% block content %}
 <div class="well">
-  <h1>User: {{ user.nickname }}!</h1>
+  <h1>User: {{ user.nickname }}</h1>
     <img class="img-polaroid" style="max-width:140px; max-height:auto;" src="{{ user.picture }}" align="left">
   <div style="padding-left:170px;min-height:180px">
     {% if user.about_me %} 
@@ -12,7 +12,7 @@
     <p>Nothing described yet :(</p>
     {% endif %}
     {% if user.last_seen %} 
-    <p><i>Last seen on: {{ user.last_seen}} </i></p>
+    <p><em>Last seen: {{ momentjs(user.last_seen).calendar() }}</em></p>
     {% endif %}
     <p>{{ user.followers.count() }} followers | </p>
     {% if user.id == current_user.id %}

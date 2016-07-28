@@ -11,6 +11,7 @@
     <link href="/static/css/bootstrap-responsive.css" rel="stylesheet">
     <script src="http://code.jquery.com/jquery.js"></script>
     <script src="/static/js/bootstrap.min.js"></script>
+    <script src="/static/js/moment.min.js"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
   </head>
   <body>
@@ -24,14 +25,14 @@
                 <li {%- if request.path == "/index" %} class="active"{% endif %}>
                     <a href="{{ url_for('index') }}">Home</a>
                 </li>
+
                 {% if current_user.is_authenticated %}
                 <li {%- if request.path == (url_for('user', nickname=current_user.nickname)) %} class="active"{% endif %}>
-                    <a href="{{ url_for('user', nickname=current_user.nickname) }}">Your Profile</a>
-                </li>
-                <li>
-                    <a href="{{ url_for('logout') }}">Logout</a>
+                    <a href="{{ url_for('user', nickname=current_user.nickname) }}">Your Profile</a></li>
+                <li><a href="{{ url_for('logout') }}">Logout</a></li>
                 </li>
                 {% endif %}
+                
             </ul>
         </div>
     </nav>
