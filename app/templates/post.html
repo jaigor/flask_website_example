@@ -1,6 +1,4 @@
-<p>
-	<div style="width:30%;height:6%">
-		<p><img class="img-rounded" src="{{ post.author.picture }}" style="width:10%;" align="left">
-		<i> {{ post.author.nickname }} says: </i> {{ post.body }}</p>
-	</div>
-</p>
+<div style="padding:5px">
+    <img class="img-rounded" src="{{ post.author.picture }}" style="max-width:50px; max-height:auto;" align="left">
+    <p style="padding-left:65px"><i> {{ post.author.nickname }} says: </i> {{ post.body }}</p>
+</div>

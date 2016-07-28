@@ -14,6 +14,27 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
   </head>
   <body>
+    <!--Menu bar-->
+    <nav class="navbar navbar-default">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <a href="#" class="brand">Microblog</a>
+            </div>
+            <ul class="nav navbar">
+                <li {%- if request.path == "/index" %} class="active"{% endif %}>
+                    <a href="{{ url_for('index') }}">Home</a>
+                </li>
+                {% if current_user.is_authenticated %}
+                <li {%- if request.path == (url_for('user', nickname=current_user.nickname)) %} class="active"{% endif %}>
+                    <a href="{{ url_for('user', nickname=current_user.nickname) }}">Your Profile</a>
+                </li>
+                <li>
+                    <a href="{{ url_for('logout') }}">Logout</a>
+                </li>
+                {% endif %}
+            </ul>
+        </div>
+    </nav>
     <!--Error handler-->
     {% with errors = get_flashed_messages(category_filter=["error"]) %}
     {% if errors %}
@@ -39,27 +60,6 @@
     </div>
     {% endif %}
     {% endwith %}
-    <!--Menu bar-->
-    <nav class="navbar navbar-default">
-        <div class="container-fluid">
-            <div class="navbar-header">
-                <a href="/index" class="brand">Microblog</a>
-            </div>
-            <ol class="nav navbar-nav">
-                <li {%- if request.path == "/index" %} class="active"{% endif %}>
-                    <a href="{{ url_for('index') }}">Home</a>
-                </li>
-                {% if current_user.is_authenticated %}
-                <li {%- if request.path == (url_for('user', nickname=current_user.nickname)) %} class="active"{% endif %}>
-                    <a href="{{ url_for('user', nickname=current_user.nickname) }}">Your Profile</a>
-                </li>
-                <li>
-                    <a href="{{ url_for('logout') }}">Logout</a>
-                </li>
-                {% endif %}
-            </ol>
-        </div>
-    </nav>
     <!--Body content -->
     <div class="container">
         {% block content %}{% endblock %}

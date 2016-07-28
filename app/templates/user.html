@@ -2,9 +2,10 @@
 {% extends "base.html" %}
 
 {% block content %}
-<h1>User: {{ user.nickname }}!</h1>
-  <div style="width:40%;height:20%">
-    <p><img class="img-polaroid" src="{{ user.picture }}" style="width:20%;" align="left">
+<div class="well">
+  <h1>User: {{ user.nickname }}!</h1>
+    <img class="img-polaroid" style="max-width:140px; max-height:auto;" src="{{ user.picture }}" align="left">
+  <div style="padding-left:170px;min-height:180px">
     {% if user.about_me %} 
     <p>{{ user.about_me}}</p>
     {% else %}
@@ -13,7 +14,7 @@
     {% if user.last_seen %} 
     <p><i>Last seen on: {{ user.last_seen}} </i></p>
     {% endif %}
-    <p>{{ user.followers.count() }} followers |
+    <p>{{ user.followers.count() }} followers | </p>
     {% if user.id == current_user.id %}
     <p><a href="{{ url_for('edit') }}">Edit your profile</a></p>
     {% elif not current_user.is_following(user) %}
@@ -21,35 +22,36 @@
     {% else %}
     <p><a href="{{ url_for('unfollow', nickname=user.nickname) }}">Unfollow</a></p>
     {% endif %}
-    </p>
   </div>
-  <hr>
-  <div>
-    <!-- posts is a Paginate object -->
-    {% for post in posts.items %}
-        {% include 'post.html' %}
-    {% endfor %}
-    <ul class="pager">
-      {% if posts.has_prev %}
-      <li class="previous">
-        <a href="{{ url_for('user', nickname=user.nickname, page=posts.prev_num) }}">&larr; Newer</a>
-      </li>
-      {% else %}
-      <li class="previous disabled">
-        <a href="#">&larr; Newer</a>
-      </li>
-      {% endif %}  
-        
-      {% if posts.has_next %}
-      <li class="next">
-        <a href="{{ url_for('user', nickname=user.nickname, page=posts.next_num) }}">Older &rarr;</a>
-      </li>
-      {% else %}
-      <li class="next disabled">
-        <a href="#">Older &rarr;</a>
-      </li>
-      {% endif %}
-    </ul>
-    </div>
+</div>
+
+<!-- posts is a Paginate object -->
+<div class="well">
+  {% for post in posts.items %}
+  <div style="min-height:60px">
+      {% include 'post.html' %}
   </div>
+  {% endfor %}
+  <ul class="pager">
+    {% if posts.has_prev %}
+    <li class="previous">
+      <a href="{{ url_for('user', nickname=user.nickname, page=posts.prev_num) }}">&larr; Newer</a>
+    </li>
+    {% else %}
+    <li class="previous disabled">
+      <a href="#">&larr; Newer</a>
+    </li>
+    {% endif %}  
+      
+    {% if posts.has_next %}
+    <li class="next">
+      <a href="{{ url_for('user', nickname=user.nickname, page=posts.next_num) }}">Older &rarr;</a>
+    </li>
+    {% else %}
+    <li class="next disabled">
+      <a href="#">Older &rarr;</a>
+    </li>
+    {% endif %}
+  </ul>
+</div>
 {% endblock %}
