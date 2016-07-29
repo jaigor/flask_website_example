@@ -3,20 +3,20 @@
     {% if current_user.is_authenticated %}
     <div class="well">
         <h2>Hi, {{ current_user.nickname }}!</h2>
-        <p><i class="icon-envelope"></i> Your email is: {{ current_user.email }} </p>
-        <p><a href="{{ url_for('logout') }}">Logout</a></p>
+        <p><i class="icon-envelope"></i> {{ _('Your email is:') }} {{ current_user.email }} </p>
+        <p><a href="{{ url_for('logout') }}">{{ _('Logout') }}</a></p>
         <form action="" method="post" name="post">
             <fieldset>
                 {{ form.hidden_tag() }}
-                <label for="post">Say something:</label>
+                <label for="post">{{ _('Say something:') }}</label>
                 {{ form.post(size=30, maxlength=140) }} 
                 {% for error in form.post.errors %}
                 <div class="alert alert-danger">
-                    <b>Error: </b> {{ error }}
+                    <b>{{ _('Error:') }} </b> {{ error }}
                 </div>
                 {% endfor %}
                 <br>   
-                <button type="submit" class="btn">Post!</button>
+                <button type="submit" class="btn">{{ _('Post!') }} </button>#################
             </fieldset>
         </form>
     </div>

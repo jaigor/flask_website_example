@@ -1,12 +1,13 @@
 from flask import render_template, flash, redirect, url_for, request
-from app import app, db
+from app import app, db, babel
 from .models import User, Post
 from .forms import EditForm, PostForm
 from flask_login import login_user, logout_user, current_user, login_required
 from oauth import OAuthSignIn
 from datetime import datetime
-from config import POSTS_PER_PAGE
+from config import POSTS_PER_PAGE, LANGUAGES
 from .emails import follower_notification
+from flask_babel import gettext
 
 
 @app.route('/', methods=['GET', 'POST'])
@@ -19,7 +20,7 @@ def index(page=1):
         post = Post(body=form.post.data, timestamp=datetime.utcnow(), author=current_user)
         db.session.add(post)
         db.session.commit()
-        flash(u'Your post is now live!','info')
+        flash(gettext(u'Your post is now live!','info'))
         return redirect(url_for('index'))
 
     posts = current_user.followed_posts().paginate(page, POSTS_PER_PAGE, False)
@@ -66,7 +67,7 @@ def oauth_callback(provider):
 
     # fails the authentication method
     if social_id is None:
-        flash(u'Authentication failed.','error')
+        flash(gettext(u'Authentication failed.','error'))
         return redirect(url_for('index'))
 
     print (not user)
@@ -110,7 +111,7 @@ def instance_username(username):
 def user(nickname, page=1):
     user = User.query.filter_by(nickname=nickname).first()
     if user == None:
-        flash(u'User %s not found.' % nickname, 'error')
+        flash(gettext(u'User %(nickname)s not found.' % nickname, 'error'))
         return redirect(url_for('index'))
     posts = user.posts.paginate(page, POSTS_PER_PAGE, False)
     
@@ -134,7 +135,8 @@ def edit():
         current_user.about_me = form.about_me.data
         db.session.add(current_user)
         db.session.commit()
-        flash(u'Your changes have been saved.', 'info') # alert correct message
+        # alert correct message
+        flash(gettext(u'Your changes have been saved.', 'info')) 
         return redirect(url_for('edit'))
     else:
         form.nickname.data = current_user.nickname
@@ -158,18 +160,19 @@ def internal_error(error):
 def follow(nickname):
     user = User.query.filter_by(nickname=nickname).first()
     if user is None:
-        flash(u'User %s not found.' % nickname, 'error') # alert wrong message
+        # alert wrong message
+        flash(gettext(u'User %(nickname)s not found.' % nickname, 'error')) 
         return redirect(url_for('index'))
     if user == current_user:
-        flash(u'You can\'t follow yourself!', 'error')
+        flash(gettext(u'You can\'t follow yourself!', 'error'))
         return redirect(url_for('user', nickname=nickname))
     u = current_user.follow(user)
     if u is None:
-        flash(u'Cannot follow ' + nickname + '.', 'error')
+        flash(gettext(u'Cannot follow ' + nickname + '.', 'error'))
         return redirect(url_for('user', nickname=nickname))
     db.session.add(u)
     db.session.commit()
-    flash(u'You are now following ' + nickname + '!', 'info')
+    flash(gettext(u'You are now following ' + nickname + '!', 'info'))
     follower_notification(user, current_user)
     return redirect(url_for('user', nickname=nickname))
 
@@ -178,16 +181,20 @@ def follow(nickname):
 def unfollow(nickname):
     user = User.query.filter_by(nickname=nickname).first()
     if user is None:
-        flash(u'User %s not found.' % nickname, 'error')
+        flash(gettext(u'User %(nickname)s not found.' % nickname, 'error'))
         return redirect(url_for('index'))
     if user == current_user:
-        flash(u'You can\'t unfollow yourself!', 'error')
+        flash(gettext(u'You can\'t unfollow yourself!', 'error'))
         return redirect(url_for('user', nickname=nickname))
     u = current_user.unfollow(user)
     if u is None:
-        flash(u'Cannot unfollow ' + nickname + '.', 'error')
+        flash(gettext(u'Cannot unfollow ' + nickname + '.', 'error'))
         return redirect(url_for('user', nickname=nickname))
     db.session.add(u)
     db.session.commit()
-    flash(u'You have stopped following ' + nickname + '.', 'info')
+    flash(gettext(u'You have stopped following ' + nickname + '.', 'info'))
     return redirect(url_for('user', nickname=nickname))
+
+@babel.localeselector
+def get_locale():
+    return request.accept_languages.best_match(LANGUAGES.keys())

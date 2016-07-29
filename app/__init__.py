@@ -7,6 +7,9 @@ from flask_mail import Mail
 
 from .momentjs import momentjs
 
+from flask.ext.babel import Babel
+babel = Babel(app)
+
 # Instance the app and config.py file
 app = Flask(__name__)
 app.config.from_object('config')

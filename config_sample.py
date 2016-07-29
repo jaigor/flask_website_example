@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import os
 basedir = os.path.abspath(os.path.dirname(__file__))
 
@@ -39,3 +40,9 @@ ADMINS = ['you@example.com']
 
 # pagination
 POSTS_PER_PAGE = 3
+
+# Available Languages
+LANGUAGES = {
+    'en': 'English',
+    'es': 'Español'
+}

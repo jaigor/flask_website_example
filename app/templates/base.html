@@ -19,17 +19,17 @@
     <nav class="navbar navbar-default">
         <div class="container-fluid">
             <div class="navbar-header">
-                <a href="#" class="brand">Microblog</a>
+                <a href="#" class="brand">{{ _('Microblog') }}</a>
             </div>
             <ul class="nav navbar">
                 <li {%- if request.path == "/index" %} class="active"{% endif %}>
-                    <a href="{{ url_for('index') }}">Home</a>
+                    <a href="{{ url_for('index') }}">{{ _('Home') }}</a>
                 </li>
 
                 {% if current_user.is_authenticated %}
                 <li {%- if request.path == (url_for('user', nickname=current_user.nickname)) %} class="active"{% endif %}>
-                    <a href="{{ url_for('user', nickname=current_user.nickname) }}">Your Profile</a></li>
-                <li><a href="{{ url_for('logout') }}">Logout</a></li>
+                    <a href="{{ url_for('user', nickname=current_user.nickname) }}">{{ _('Your Profile') }}</a></li>
+                <li><a href="{{ url_for('logout') }}">{{ _('Logout') }}</a></li>
                 </li>
                 {% endif %}
                 
@@ -43,7 +43,7 @@
         <button type="button" class="close" data-dismiss="alert">&times;</button>
         <ul>
         {%- for msg in errors %}
-        <li><b>Error:</b> {{ msg }}</li>
+        <li><b>{{ _('Error:') }}</b> {{ msg }}</li>
         {% endfor -%}
         </ul>
     </div>
@@ -55,7 +55,7 @@
         <button type="button" class="close" data-dismiss="alert">&times;</button>
         <ul>
         {%- for msg in infos %}
-        <li><b>Info:</b> {{ msg }}</li>
+        <li><b>{{ _('Info:') }}</b> {{ msg }}</li>
         {% endfor -%} 
         </ul>
     </div>
