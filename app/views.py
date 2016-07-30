@@ -73,6 +73,8 @@ def oauth_callback(provider):
     print (not user)
     if not user:
         if instance_username(username):
+            # removes from the name some characters (security) 
+            username = User.make_valid_nickname(username)
             # If username exits looks for another 
             username = User.make_unique_nickname(username)
         else:
@@ -130,7 +132,9 @@ def edit():
         if form.nickname.data == current_user.nickname:
             new_nickname = current_user.nickname
         else:
-            new_nickname = User.make_unique_nickname(form.nickname.data)
+            # removes from the name some characters (security) 
+            new_nickname = User.make_valid_nickname(form.nickname.data)
+            new_nickname = User.make_unique_nickname(new_nickname)
         current_user.nickname = new_nickname
         current_user.about_me = form.about_me.data
         db.session.add(current_user)

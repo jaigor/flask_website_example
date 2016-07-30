@@ -2,9 +2,9 @@
 {% extends "base.html" %}
 
 {% block content %}
-<h2>Sign In</h2>
+<h2>{{ _('Sign In') }}</h2>
 <div class="well">
-	<p>Please, choose one of the social accounts to access the website:</p>
+	<p>{{ _('Please, choose one of the social accounts to access the website: ') }}</p>
 	<p><a href="{{ url_for('oauth_authorize', provider='facebook') }}"><img src="/static/img/FBlogin.png" class="img-responsive" alt="Sign it with Facebook" style="max-width:200px"></a></p>
 	<p><a href="{{ url_for('oauth_authorize', provider='twitter') }}"><img src="/static/img/Twitterlogin.png" class="img-responsive" alt="Sign it with Twitter" style="max-width:200px"></a></p>
 </div>

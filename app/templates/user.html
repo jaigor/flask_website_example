@@ -3,24 +3,42 @@
 
 {% block content %}
 <div class="well">
-  <h1>User: {{ user.nickname }}</h1>
+  {% autoescape false %}
+  <h1>{{ _('User: %(nickname)s !', nickname = user.nickname) }} </h1>
+  {% endautoescape %}
     <img class="img-polaroid" style="max-width:140px; max-height:auto;" src="{{ user.picture }}" align="left">
   <div style="padding-left:170px;min-height:180px">
     {% if user.about_me %} 
-    <p>{{ user.about_me}}</p>
+    {% autoescape false %}
+    <p>{{ _('%(about)', about = user.about_me) }}</p>
+    {% endautoescape %}
     {% else %}
-    <p>Nothing described yet :(</p>
+    <p>{{ _('Nothing described yet :(') }}</p>
     {% endif %}
     {% if user.last_seen %} 
-    <p><em>Last seen: {{ momentjs(user.last_seen).calendar() }}</em></p>
+    {% autoescape false %}
+    <p><em>{{ _('Last seen: %(when)', when = momentjs(user.last_seen).calendar()) }}</em></p>
+    {% endautoescape %}
     {% endif %}
-    <p>{{ user.followers.count() }} followers | </p>
+    <p>{{ user.followers.count() }} {{ _('followers') }} </p>
     {% if user.id == current_user.id %}
-    <p><a href="{{ url_for('edit') }}">Edit your profile</a></p>
+    <p>
+      {% autoescape false %}
+      {{ _('%(edit)', edit = '<a href="%s">%s</a>' % (url_for('edit'), 'Edit your profile')) }}
+      {% endautoescape %}
+    </p>
     {% elif not current_user.is_following(user) %}
-    <p><a href="{{ url_for('follow', nickname=user.nickname) }}">Follow</a></p>
+    <p>
+      {% autoescape false %}
+      {{ _('%(follow)', follow = '<a href="%s">%s</a>' % (url_for('follow', nickname=user.nickname), 'Follow')) }}
+      {% endautoescape %}
+    </p>
     {% else %}
-    <p><a href="{{ url_for('unfollow', nickname=user.nickname) }}">Unfollow</a></p>
+    <p>
+      {% autoescape false %}
+      {{ _('%(unfollow)', unfollow = '<a href="%s">%s</a>' % (url_for('unfollow', nickname=user.nickname), 'Unfollow')) }}
+      {% endautoescape %}
+    </p>
     {% endif %}
   </div>
 </div>
@@ -35,21 +53,21 @@
   <ul class="pager">
     {% if posts.has_prev %}
     <li class="previous">
-      <a href="{{ url_for('user', nickname=user.nickname, page=posts.prev_num) }}">&larr; Newer</a>
+      <a href="{{ url_for('user', nickname=user.nickname, page=posts.prev_num) }}">&larr; {{ _('Newer') }}</a>
     </li>
     {% else %}
     <li class="previous disabled">
-      <a href="#">&larr; Newer</a>
+      <a href="#">&larr; {{ _('Newer') }}</a>
     </li>
     {% endif %}  
       
     {% if posts.has_next %}
     <li class="next">
-      <a href="{{ url_for('user', nickname=user.nickname, page=posts.next_num) }}">Older &rarr;</a>
+      <a href="{{ url_for('user', nickname=user.nickname, page=posts.next_num) }}">{{ _('Older') }} &rarr;</a>
     </li>
     {% else %}
     <li class="next disabled">
-      <a href="#">Older &rarr;</a>
+      <a href="#">{{ _('Older') }} &rarr;</a>
     </li>
     {% endif %}
   </ul>
