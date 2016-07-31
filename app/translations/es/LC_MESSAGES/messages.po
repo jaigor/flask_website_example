@@ -7,8 +7,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2016-07-31 18:44+0200\n"
-"PO-Revision-Date: 2016-07-31 19:59+0200\n"
+"POT-Creation-Date: 2016-08-01 00:21+0200\n"
+"PO-Revision-Date: 2016-08-01 00:23+0200\n"
+"Last-Translator: \n"
 "Language: es\n"
 "Language-Team: es <LL@li.org>\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -16,62 +17,68 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.3.4\n"
-"Last-Translator: \n"
-"X-Generator: Poedit 1.8.8\n"
+"X-Generator: Poedit 1.8.7.1\n"
+
+#: app/__init__.py:23
+msgid "Please log in to access this page."
+msgstr "Por favor, inicia sesión para acceder a la página"
 
 #: app/forms.py:20
 msgid ""
-"This nickname has invalid characters. Please use letters, numbers, dots "
-"and underscores only."
+"This nickname has invalid characters. Please use letters, numbers, dots and "
+"underscores only."
 msgstr ""
-"El nombre del apodo tiene caracteres no válidos. Por favor, utilice "
-"letras, números, puntos y barras baja únicamente."
+"El nombre del apodo tiene caracteres no válidos. Por favor, utilice letras, "
+"números, puntos y barras baja únicamente."
 
 #: app/forms.py:24
 msgid "This nickname is already in use. Please choose another one."
-msgstr ""
-"Este apodo se está usando actualmente. Por favor, escoja otro distinto."
+msgstr "Este apodo se está usando actualmente. Por favor, escoja otro distinto."
 
 #: app/views.py:23
 msgid "Your post is now live!"
 msgstr "Tu post se encuentra colgado!"
 
-#: app/views.py:70
+#: app/views.py:71
 msgid "Authentication failed."
 msgstr "Fallo al autentificar."
 
-#: app/views.py:116 app/views.py:168 app/views.py:188
+#: app/views.py:117 app/views.py:169 app/views.py:189
 #, python-format
 msgid "User %(nickname)s not found."
 msgstr "No se ha encontrado el usuario %(nickname)s."
 
-#: app/views.py:143
+#: app/views.py:144
 msgid "Your changes have been saved."
 msgstr "Se han guardado los cambios."
 
-#: app/views.py:171
+#: app/views.py:172
 msgid "You can't follow yourself!"
 msgstr "No puedes seguirte a tí mismo!"
 
-#: app/views.py:175
-msgid "Cannot follow ."
-msgstr "No puedes seguir ."
+#: app/views.py:176
+#, python-format
+msgid "Cannot follow %(nickname)s."
+msgstr "No puedes seguir a %(nickname)s."
 
-#: app/views.py:179
-msgid "You are now following !"
-msgstr "Ahora sigues a !"
+#: app/views.py:180
+#, python-format
+msgid "You are now following %(nickname)s!"
+msgstr "¡Ahora sigues a %(nickname)s!"
 
-#: app/views.py:191
+#: app/views.py:192
 msgid "You can't unfollow yourself!"
-msgstr "No puedes seguirte a tí mismo!"
+msgstr "¡No puedes seguirte a tí mismo!"
 
-#: app/views.py:195
-msgid "Cannot unfollow ."
-msgstr "No puedes dejar de seguir ."
+#: app/views.py:196
+#, python-format
+msgid "Cannot unfollow %(nickname)s."
+msgstr "No puedes dejar de seguir a %(nickname)s."
 
-#: app/views.py:199
-msgid "You have stopped following ."
-msgstr "Has dejado de seguir ."
+#: app/views.py:200
+#, python-format
+msgid "You have stopped following %(nickname)s!"
+msgstr "¡Has dejado de seguir a %(nickname)s!"
 
 #: app/templates/404.html:5
 msgid "Oops, File Not Found"
@@ -87,28 +94,27 @@ msgstr "Ha ocurrido un error no esperado, creo que es por tu culpa..."
 
 #: app/templates/500.html:6
 msgid "The administrator has been notified, to solve the problem!"
-msgstr ""
-"Se ha notificado al administrador del error para resolver el problema!"
+msgstr "Se ha notificado al administrador del error para resolver el problema!"
 
-#: app/templates/base.html:26
+#: app/templates/base.html:29
 msgid "Home"
 msgstr "Inicio"
 
-#: app/templates/base.html:31
+#: app/templates/base.html:34
 msgid "Your Profile"
 msgstr "Tu perfil"
 
-#: app/templates/base.html:32
+#: app/templates/base.html:35
 msgid "Logout"
 msgstr "Cerrar sesión"
 
-#: app/templates/base.html:45 app/templates/index.html:15
+#: app/templates/base.html:48 app/templates/index.html:15
 msgid "Error:"
 msgstr "Error:"
 
-#: app/templates/base.html:57
+#: app/templates/base.html:60
 msgid "Info:"
-msgstr "Información:"
+msgstr "Info:"
 
 #: app/templates/edit.html:5
 msgid "Edit Your Profile"
@@ -132,7 +138,7 @@ msgstr "Guardar Cambios"
 
 #: app/templates/follower_email.html:1
 msgid "Dear"
-msgstr "Querido"
+msgstr "Estimado/a"
 
 #: app/templates/follower_email.html:3
 #, python-format
@@ -162,11 +168,11 @@ msgstr "Haz un comentario: "
 
 #: app/templates/index.html:20
 msgid "Post!"
-msgstr "Postea!"
+msgstr "Envíar!"
 
 #: app/templates/index.html:25
 msgid "List of posts"
-msgstr "Lista de posts"
+msgstr "Lista de comentarios"
 
 #: app/templates/index.html:36 app/templates/index.html:40
 #: app/templates/user.html:44 app/templates/user.html:48
@@ -180,25 +186,23 @@ msgstr "Antiguos"
 
 #: app/templates/index.html:55
 msgid "You are not logged in!"
-msgstr "No te encuentras logueado!"
+msgstr "¡No has iniciado sesión!"
 
 #: app/templates/index.html:56
 msgid "Sign it with Facebook"
-msgstr "Acceder con Facebook"
+msgstr "Acceder mediante Facebook"
 
 #: app/templates/index.html:57
 msgid "Sign it with Twitter"
-msgstr "Acceder con Twitter"
+msgstr "Acceder mediante Twitter"
 
 #: app/templates/login.html:5
 msgid "Sign In"
-msgstr "Acceder"
+msgstr "Iniciar sesión"
 
 #: app/templates/login.html:7
 msgid "Please, choose one of the social accounts to access the website: "
-msgstr ""
-"Por favor, escoja una de las redes sociales que use para acceder a la "
-"web:"
+msgstr "Por favor, escoja una de las redes sociales que use para acceder a la web:"
 
 #: app/templates/post.html:5
 #, python-format

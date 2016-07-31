@@ -41,6 +41,7 @@ def before_request():
         current_user.last_seen = datetime.utcnow()
         db.session.add(current_user)
         db.session.commit()
+    g.locale = get_locale()
 
 @app.route('/logout')
 def logout():

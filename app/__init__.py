@@ -7,6 +7,8 @@ from flask_mail import Mail
 
 from .momentjs import momentjs
 
+from flask.json import JSONEncoder
+
 # Instance the app and config.py file
 app = Flask(__name__)
 app.config.from_object('config')
@@ -18,8 +20,23 @@ lm = LoginManager(app)
 lm.login_view = 'login'
 
 # Language library
-from flask.ext.babel import Babel
+from flask.ext.babel import Babel, lazy_gettext
 babel = Babel(app)
+lm.login_message = lazy_gettext('Please log in to access this page.')
+
+class CustomJSONEncoder(JSONEncoder):
+    """This class adds support for lazy translation texts to Flask's
+    JSON encoder. This is necessary when flashing translated texts."""
+    def default(self, obj):
+        from speaklater import is_lazy_string
+        if is_lazy_string(obj):
+            try:
+                return unicode(obj)  # python 2
+            except NameError:
+                return str(obj)  # python 3
+        return super(CustomJSONEncoder, self).default(obj)
+
+app.json_encoder = CustomJSONEncoder
 
 # Instance Mail object to connect SMTP server and send emails
 mail = Mail(app)
@@ -47,3 +64,4 @@ if not app.debug:
     app.jinja_env.globals['momentjs'] = momentjs
 
 from app import views, models
+
