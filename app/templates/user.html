@@ -3,41 +3,29 @@
 
 {% block content %}
 <div class="well">
-  {% autoescape false %}
-  <h1>{{ _('User: %(nickname)s !', nickname = user.nickname) }} </h1>
-  {% endautoescape %}
+  <h1>{{ user.nickname }} </h1>
     <img class="img-polaroid" style="max-width:140px; max-height:auto;" src="{{ user.picture }}" align="left">
   <div style="padding-left:170px;min-height:180px">
     {% if user.about_me %} 
-    {% autoescape false %}
-    <p>{{ _('%(about)', about = user.about_me) }}</p>
-    {% endautoescape %}
+      <p>{{ user.about_me }}</p>
     {% else %}
-    <p>{{ _('Nothing described yet :(') }}</p>
+      <p>{{ _('Nothing described yet :(') }}</p>
     {% endif %}
     {% if user.last_seen %} 
-    {% autoescape false %}
-    <p><em>{{ _('Last seen: %(when)', when = momentjs(user.last_seen).calendar()) }}</em></p>
-    {% endautoescape %}
+    <p><em>{{ _('Last seen:') }} {{ momentjs(user.last_seen).calendar() }}</em></p>
     {% endif %}
-    <p>{{ user.followers.count() }} {{ _('followers') }} </p>
+    <p>{{ _('Followers: ') }} {{ user.followers.count() - 1 }} | {{ _('Following: ') }} {{ user.followed.count() - 1 }} </p>
     {% if user.id == current_user.id %}
     <p>
-      {% autoescape false %}
-      {{ _('%(edit)', edit = '<a href="%s">%s</a>' % (url_for('edit'), 'Edit your profile')) }}
-      {% endautoescape %}
+      <a href="{{ url_for('edit') }}">{{ _('Edit your profile') }}</a>
     </p>
     {% elif not current_user.is_following(user) %}
     <p>
-      {% autoescape false %}
-      {{ _('%(follow)', follow = '<a href="%s">%s</a>' % (url_for('follow', nickname=user.nickname), 'Follow')) }}
-      {% endautoescape %}
+      <a href="{{ url_for('follow', nickname=user.nickname) }}">{{ _('Follow') }}</a>
     </p>
     {% else %}
     <p>
-      {% autoescape false %}
-      {{ _('%(unfollow)', unfollow = '<a href="%s">%s</a>' % (url_for('unfollow', nickname=user.nickname), 'Unfollow')) }}
-      {% endautoescape %}
+      <a href="{{ url_for('unfollow', nickname=user.nickname) }}">{{ _('Unfollow') }}</a>
     </p>
     {% endif %}
   </div>

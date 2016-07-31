@@ -19,30 +19,19 @@
     <nav class="navbar navbar-default">
         <div class="container-fluid">
             <div class="navbar-header">
-                {% autoescape false %}
-                {{ _('%(header)', header = '<a href="#" class="brand">%s</a>' % ('Microblog')) }}
-                {% endautoescape %}
+                <a href="#" class="brand">Microblog</a>
             </div>
             <ul class="nav navbar">
                 <li {%- if request.path == "/index" %} class="active"{% endif %}>
-                    {% autoescape false %}
-                    {{ _('%(home)', home = '<a href="%s">%s</a>' % (url_for('index'), 'Home')) }}
-                    {% endautoescape %}
+                    <a href="{{ url_for('index') }}">{{ _('Home') }}</a>
                 </li>
 
                 {% if current_user.is_authenticated %}
                 <li {%- if request.path == (url_for('user', nickname=current_user.nickname)) %} class="active"{% endif %}>
-                    {% autoescape false %}
-                    {{ _('%(profile)', profile = '<a href="%s">%s</a>' % (url_for('user', nickname=current_user.nickname), 'Your Profile')) }}
-                    {% endautoescape %}
-                </li>
-                <li>
-                    {% autoescape false %}
-                    {{ _('%(logout)', logout = '<a href="%s">%s</a>' % (url_for('logout'), 'Logout')) }}
-                    {% endautoescape %}
+                    <a href="{{ url_for('user', nickname=current_user.nickname) }}">{{ _('Your Profile') }}</a></li>
+                <li><a href="{{ url_for('logout') }}">{{ _('Logout') }}</a></li>
                 </li>
                 {% endif %}
-                
             </ul>
         </div>
     </nav>

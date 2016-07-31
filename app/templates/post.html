@@ -1,13 +1,12 @@
 <div style="padding:5px">
     <img class="img-rounded" src="{{ post.author.picture }}" style="max-width:50px; max-height:auto;" align="left">
     {% autoescape false %}
-    <p style="padding-left:65px">
-    	{{ _('%(nickname) said %(when)', nickname = '<a href="%s"><span class="label label-primary">%s</span></a>' % (url_for('user', nickname=post.author.nickname), post.author.nickname), when = momentjs(post.timestamp).fromNow()) }}
-    </p>
+     <p style="padding-left:65px"> 
+     	{{ _('%(nickname)s said %(when)s:', nickname='<a href="%s"><span class="label label-primary">%s</span></a>' % (url_for('user', nickname=post.author.nickname), post.author.nickname), when=momentjs(post.timestamp).fromNow()) }}
+     </p>
     {% endautoescape %}
-    {% autoescape false %}
     <p style="padding-left:65px">
-    	<i> {{ _('%(body)', body = post.body) }} </i>
+    	<i> {{ post.body }} </i>
     </p>
-    {% endautoescape %}
 </div>
+

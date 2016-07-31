@@ -3,7 +3,5 @@
 
 {% block content %}
 <h1>{{ _('Oops, File Not Found') }}</h1>
-    {% autoescape false %}
-    <p>{{ _('%(back)', back = '<a href="%s">%s</a>' % (url_for('index'), 'Back')) }}</p>
-    {% endautoescape %}
+    <p><a href="{{ url_for('index') }}">{{ _('Back') }}</a></p>
 {% endblock %}

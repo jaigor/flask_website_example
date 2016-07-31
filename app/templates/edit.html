@@ -7,18 +7,18 @@
   <form class="form-horizontal" action="" method="post" name="edit">
       <div class="control-group">
         {{form.hidden_tag()}}
-        <label class="control-label" for="nickname"> <i class=" icon-user"></i>{{ _('Your nickname:') }} </label>
+        <label class="control-label" for="nickname"> <i class=" icon-user"></i>{{ _('Your nickname: ') }} </label>
         <div class="controls">
           {{ form.nickname(size=24) }}
         </div>
         {% for error in form.errors.nickname %}
         <div class="alert alert-danger">
-          <b>{{ _('Error:') }} </b> {{ error }}
+          <b>{{ _('Error: ') }} </b> {{ error }}
         </div>
         {% endfor %}
       </div>
       <div class="control-group">     
-          <label class="control-label" for="about_me">{{ _('About yourself:') }}</label>
+          <label class="control-label" for="about_me">{{ _('About yourself: ') }}</label>
           <div class="controls">
             {{ form.about_me(cols=32, rows=4) }}
           </div>

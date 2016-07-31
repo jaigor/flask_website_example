@@ -2,15 +2,8 @@
 {% block content %}
     {% if current_user.is_authenticated %}
     <div class="well">
-        {% autoescape false %}
         <h2>{{ _('Hi, %(nickname)s !', nickname = current_user.nickname) }}</h2>
-        {% endautoescape %}
         <p><i class="icon-envelope"></i> {{ _('Your email is:') }} {{ current_user.email }} </p>
-        <p>
-            {% autoescape false %}
-            {{ _('%(logout)', logout = '<a href="%s">%s</a>' % (url_for('logout'), 'Logout')) }}
-            {% endautoescape %}
-        </p>
         <form action="" method="post" name="post">
             <fieldset>
                 {{ form.hidden_tag() }}

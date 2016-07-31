@@ -105,6 +105,6 @@ class TwitterSignIn(OAuthSignIn):
         me = oauth_session.get('account/verify_credentials.json').json()
         social_id = 'twitter$' + str(me.get('id'))
         username = me.get('screen_name')
-        email = "Not provided email"
+        email = gettext('Not provided email')
         picture = None # not implemented photo, used default gravatar 
         return social_id, username, email, picture   # Twitter does not provide email

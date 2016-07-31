@@ -165,18 +165,18 @@ def follow(nickname):
     user = User.query.filter_by(nickname=nickname).first()
     if user is None:
         # alert wrong message
-        flash(gettext(u'User %(nickname)s not found.' % nickname, 'error')) 
+        flash(gettext(u'User %(nickname)s not found.', nickname=nickname), 'error')
         return redirect(url_for('index'))
     if user == current_user:
-        flash(gettext(u'You can\'t follow yourself!', 'error'))
+        flash(gettext(u'You can\'t follow yourself!'), 'error')
         return redirect(url_for('user', nickname=nickname))
     u = current_user.follow(user)
     if u is None:
-        flash(gettext(u'Cannot follow ' + nickname + '.', 'error'))
+        flash(gettext(u'Cannot follow %(nickname)s.', nickname=nickname), 'error')
         return redirect(url_for('user', nickname=nickname))
     db.session.add(u)
     db.session.commit()
-    flash(gettext(u'You are now following ' + nickname + '!', 'info'))
+    flash(gettext(u'You are now following %(nickname)s!', nickname=nickname), 'info')
     follower_notification(user, current_user)
     return redirect(url_for('user', nickname=nickname))
 
@@ -185,20 +185,20 @@ def follow(nickname):
 def unfollow(nickname):
     user = User.query.filter_by(nickname=nickname).first()
     if user is None:
-        flash(gettext(u'User %(nickname)s not found.' % nickname, 'error'))
+        flash(gettext(u'User %(nickname)s not found.', nickname=nickname), 'error')
         return redirect(url_for('index'))
     if user == current_user:
-        flash(gettext(u'You can\'t unfollow yourself!', 'error'))
+        flash(gettext(u'You can\'t unfollow yourself!'), 'error')
         return redirect(url_for('user', nickname=nickname))
     u = current_user.unfollow(user)
     if u is None:
-        flash(gettext(u'Cannot unfollow ' + nickname + '.', 'error'))
+        flash(gettext(u'Cannot unfollow %(nickname)s.', nickname=nickname), 'error')
         return redirect(url_for('user', nickname=nickname))
     db.session.add(u)
     db.session.commit()
-    flash(gettext(u'You have stopped following ' + nickname + '.', 'info'))
+    flash(gettext(u'You have stopped following %(nickname)s!', nickname=nickname), 'info')
     return redirect(url_for('user', nickname=nickname))
 
 @babel.localeselector
 def get_locale():
-    return request.accept_languages.best_match(LANGUAGES.keys())
+    return 'en'#request.accept_languages.best_match(LANGUAGES.keys())

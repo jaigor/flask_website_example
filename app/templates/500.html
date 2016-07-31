@@ -4,7 +4,5 @@
 {% block content %}
 <h1>{{ _('An unexpected error has occurred, I think it´s your fault...') }}</h1>
     <p>{{ _('The administrator has been notified, to solve the problem!') }}</p>
-    {% autoescape false %}
-    <p>{{ _('%(back)', back = '<a href="%s">%s</a>' % (url_for('index'), 'Back')) }}</p>
-    {% endautoescape %}
+    <p><a href="{{ url_for('index') }}">{{ _('Back') }}</a></p>
 {% endblock %}
