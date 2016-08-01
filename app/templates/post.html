@@ -2,11 +2,25 @@
     <img class="img-rounded" src="{{ post.author.picture }}" style="max-width:50px; max-height:auto;" align="left">
     {% autoescape false %}
      <p style="padding-left:65px"> 
-     	{{ _('%(nickname)s said %(when)s:', nickname='<a href="%s"><span class="label label-primary">%s</span></a>' % (url_for('user', nickname=post.author.nickname), post.author.nickname), when=momentjs(post.timestamp).fromNow()) }}
+        {{ _('%(nickname)s said %(when)s:', nickname='<a href="%s"><span class="label label-primary">%s</span></a>' % (url_for('user', nickname=post.author.nickname), post.author.nickname), when=momentjs(post.timestamp).fromNow()) }}
      </p>
     {% endautoescape %}
     <p style="padding-left:65px">
-    	<i> {{ post.body }} </i>
+        <i><span id="post{{ post.id }}">{{ post.body }}</span></i>
     </p>
+    {% if post.language != None and post.language != '' and post.language != g.locale %}
+        <div>
+            <span id="translation{{post.id}}">
+                <a href="javascript:translate('{{ post.language }}', '{{ g.locale }}', '#post{{ post.id }}', '#translation{{ post.id }}', '#loading{{ post.id }}');">{{ _('Translate') }}</a>
+            </span>
+            <img id="loading{{post.id}}" style="display: none" src="/static/img/loading.gif">
+        </div>
+    {% endif %}
+
+    {% if post.author.id == current_user.id %}
+        <div>
+            <a href="{{ url_for('delete', id=post.id) }}">{{ _('Delete') }}</a>
+        </div>
+    {% endif %}
 </div>
 

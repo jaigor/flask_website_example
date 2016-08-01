@@ -1,6 +1,7 @@
 # OAuth1 used for Twitter and OAuth2 for Facebook
 from rauth import OAuth1Service, OAuth2Service 
 from flask import current_app, url_for, request, redirect, session
+from flask_babel import gettext
 
 class OAuthSignIn(object):
     providers = None

@@ -20,7 +20,7 @@ lm = LoginManager(app)
 lm.login_view = 'login'
 
 # Language library
-from flask.ext.babel import Babel, lazy_gettext
+from flask_babel import Babel, lazy_gettext
 babel = Babel(app)
 lm.login_message = lazy_gettext('Please log in to access this page.')
 
