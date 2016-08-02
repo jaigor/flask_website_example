@@ -13,7 +13,7 @@ Flask-SQLAlchemy==2.1
 Flask-WhooshAlchemy==0.56
 Flask-WTF==0.12
 flipflop==1.0
-guess-language-spirit==0.5a4
+https://bitbucket.org/spirit/guess_language/downloads/guess_language-spirit-0.5a4.tar.bz2
 guesslanguage==0.2.1
 gunicorn==19.6.0
 itsdangerous==0.24
