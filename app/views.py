@@ -7,9 +7,10 @@ from .translate import microsoft_translate
 from flask_login import login_user, logout_user, current_user, login_required
 from oauth import OAuthSignIn
 from datetime import datetime
-from config import POSTS_PER_PAGE, LANGUAGES
+from config import POSTS_PER_PAGE, LANGUAGES, DATABASE_QUERY_TIMEOUT
 from flask_babel import gettext
 from guess_language import guessLanguage
+from flask_sqlalchemy import get_debug_queries
 
 
 @app.route('/', methods=['GET', 'POST'])
@@ -234,3 +235,10 @@ def delete(id):
     db.session.commit()
     flash('Your post has been deleted.')
     return redirect(url_for('index'))
+
+@app.after_request
+def after_request(response):
+    for query in get_debug_queries():
+        if query.duration >= DATABASE_QUERY_TIMEOUT:
+            app.logger.warning("SLOW QUERY: %s\nParameters: %s\nDuration: %fs\nContext: %s\n" % (query.statement, query.parameters, query.duration, query.context))
+    return response

@@ -1,4 +1,11 @@
 #!flask/bin/python
+# -*- coding: utf8 -*-
+
+# observer report tool
+from coverage import coverage
+cov = coverage(branch=True, omit=['flask/*', 'tests.py'])
+cov.start()
+
 import os
 import unittest
 
@@ -32,11 +39,15 @@ class TestCase(unittest.TestCase):
         assert pic[0:len(expected)] == expected
 
     def test_make_unique_nickname(self):
+        # create a user and write it to the database
         u = User(social_id='john_id', nickname='john', email='john@example.com')
         db.session.add(u)
         db.session.commit()
+        nickname = User.make_unique_nickname('susan')
+        assert nickname == 'susan'
         nickname = User.make_unique_nickname('john')
         assert nickname != 'john'
+        # make another user with the new nickname
         u = User(social_id='susan_id', nickname=nickname, email='susan@example.com')
         db.session.add(u)
         db.session.commit()
@@ -116,9 +127,34 @@ class TestCase(unittest.TestCase):
         assert f3 == [p4, p3]
         assert f4 == [p4]
 
+    def test_delete_post(self):
+        # create a user and a post
+        u = User(social_id='john_id',nickname='john', email='john@example.com')
+        p = Post(body='test post', author=u, timestamp=datetime.utcnow())
+        db.session.add(u)
+        db.session.add(p)
+        db.session.commit()
+        # query the post and destroy the session
+        p = Post.query.get(1)
+        db.session.remove()
+        # delete the post using a new session
+        db.session = db.create_scoped_session()
+        db.session.delete(p)
+        db.session.commit()
+
     def test_translation(self):
         assert microsoft_translate(u'English', 'en', 'es') == u'Inglés'
         assert microsoft_translate(u'Español', 'es', 'en') == u'Spanish'
 
 if __name__ == '__main__':
-    unittest.main()
+    try:
+        unittest.main()
+    except:
+        pass
+    cov.stop()
+    cov.save()
+    print("\n\nCoverage Report:\n")
+    cov.report()
+    print("HTML version: " + os.path.join(basedir, "tmp/coverage/index.html"))
+    cov.html_report(directory='tmp/coverage')
+    cov.erase()

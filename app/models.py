@@ -1,4 +1,5 @@
 from app import db, lm, app
+from config import WHOOSH_ENABLED
 # dependencies for OAuth Autenthification
 from flask_login import UserMixin
 from oauth import FacebookSignIn
