@@ -9,7 +9,7 @@ flask
 app.db
 
 # Config codes
-config.py
+config-keys.py
 
 # Logs
 tmp/
