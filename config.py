@@ -19,7 +19,7 @@ MAX_SEARCH_RESULTS = 50
 SQLALCHEMY_TRACK_MODIFICATIONS = True
 
 WTF_CSRF_ENABLED = True
-SECRET_KEY = os.environ.get['SECRET-KEY']
+SECRET_KEY = 'SECRET-KEY'
 
 # credentials used for the services to access
 OAUTH_CREDENTIALS = {
@@ -43,7 +43,7 @@ MAIL_USERNAME = os.environ.get('MAIL_USERNAME','username@gmail.com')
 MAIL_PASSWORD = os.environ.get('MAIL_PASSWORD','password')
 
 # administrator list
-ADMINS = os.environ['ADMINS']
+ADMINS = 'ADMINS'
 
 # pagination
 POSTS_PER_PAGE = 3
@@ -55,5 +55,5 @@ LANGUAGES = {
 }
 
 # microsoft translation service
-MS_TRANSLATOR_CLIENT_ID = os.environ.get('MS_TRANSLATOR_CLIENT_ID') # enter your MS translator app id here
-MS_TRANSLATOR_CLIENT_SECRET = os.environ.get('MS_TRANSLATOR_CLIENT_SECRET') # enter your MS translator app secret here
+MS_TRANSLATOR_CLIENT_ID = 'MS_TRANSLATOR_CLIENT_ID' # enter your MS translator app id here
+MS_TRANSLATOR_CLIENT_SECRET = 'MS_TRANSLATOR_CLIENT_SECRET' # enter your MS translator app secret here
