@@ -19,17 +19,17 @@ MAX_SEARCH_RESULTS = 50
 SQLALCHEMY_TRACK_MODIFICATIONS = True
 
 WTF_CSRF_ENABLED = True
-SECRET_KEY = 'YOUR-SECRET-KEY-GOES-HERE'
+SECRET_KEY = os.environ['SECRET-KEY']
 
 # credentials used for the services to access
 OAUTH_CREDENTIALS = {
     'facebook': {
-        'id': 'FACEBOOK APP ID ASSIGNED',
-        'secret': 'FACEBOOK APP SECRET ASSIGNED'
+        'id': os.environ['FACEBOOK-APP-ID'],
+        'secret': os.environ['FACEBOOK-APP-SECRET']
     },
     'twitter': {
-        'id': 'TWITTER APP ID ASSIGNED',
-        'secret': 'TWITTER APP SECRET ASSIGNED'
+        'id': os.environ['TWITTER-APP-ID'],
+        'secret': os.environ['TWITTER-APP-SECRET']
     }
 }
 
@@ -43,7 +43,7 @@ MAIL_USERNAME = os.environ.get('MAIL_USERNAME','username@gmail.com')
 MAIL_PASSWORD = os.environ.get('MAIL_PASSWORD','password')
 
 # administrator list
-ADMINS = ['you@example.com']
+ADMINS = os.environ['ADMINS']
 
 # pagination
 POSTS_PER_PAGE = 3
@@ -55,5 +55,5 @@ LANGUAGES = {
 }
 
 # microsoft translation service
-MS_TRANSLATOR_CLIENT_ID = '' # enter your MS translator app id here
-MS_TRANSLATOR_CLIENT_SECRET = '' # enter your MS translator app secret here
+MS_TRANSLATOR_CLIENT_ID = os.environ.get('MS_TRANSLATOR_CLIENT_ID') # enter your MS translator app id here
+MS_TRANSLATOR_CLIENT_SECRET = os.environ.get('MS_TRANSLATOR_CLIENT_SECRET') # enter your MS translator app secret here
