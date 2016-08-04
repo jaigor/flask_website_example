@@ -19,7 +19,7 @@ MAX_SEARCH_RESULTS = 50
 SQLALCHEMY_TRACK_MODIFICATIONS = True
 
 WTF_CSRF_ENABLED = True
-SECRET_KEY = os.environ['SECRET-KEY']
+SECRET_KEY = os.environ.get['SECRET-KEY']
 
 # credentials used for the services to access
 OAUTH_CREDENTIALS = {
