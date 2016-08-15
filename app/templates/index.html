@@ -26,9 +26,9 @@
         <!-- posts is a Paginate object -->
         {% for post in posts.items %}
         <div style="min-height:60px">
-    		{% include 'post.html' %}
+            {% include 'post.html' %}
         </div>
-    	{% endfor %}
+        {% endfor %}
         <!-- Newer or Older posts -->
         <ul class="pager">
             {% if posts.has_prev %}
