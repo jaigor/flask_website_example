@@ -29,7 +29,7 @@ def index(page=1):
                     language=language)
         db.session.add(post)
         db.session.commit()
-        flash(gettext(u'Your post is now live!'),'info')
+        flash(gettext(u'Your post is now live!'), 'info')
         return redirect(url_for('index'))
 
     posts = current_user.followed_posts().paginate(page, POSTS_PER_PAGE, False)
@@ -77,7 +77,7 @@ def oauth_callback(provider):
 
     # fails the authentication method
     if social_id is None:
-        flash(gettext(u'Authentication failed.',)'error')
+        flash(gettext(u'Authentication failed.'), 'error')
         return redirect(url_for('index'))
 
     if not user:
