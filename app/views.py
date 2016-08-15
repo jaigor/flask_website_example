@@ -77,7 +77,7 @@ def oauth_callback(provider):
 
     # fails the authentication method
     if social_id is None:
-        flash(gettext(u'Authentication failed.','error'))
+        flash(gettext(u'Authentication failed.',)'error')
         return redirect(url_for('index'))
 
     if not user:
@@ -122,7 +122,7 @@ def instance_username(username):
 def user(nickname, page=1):
     user = User.query.filter_by(nickname=nickname).first()
     if user == None:
-        flash(gettext(u'User %(nickname)s not found.' % nickname, 'error'))
+        flash(gettext(u'User %(nickname)s not found.' % nickname), 'error')
         return redirect(url_for('index'))
     posts = user.ordered_posts.paginate(page, POSTS_PER_PAGE, False)
     
