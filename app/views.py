@@ -124,7 +124,7 @@ def user(nickname, page=1):
     if user == None:
         flash(gettext(u'User %(nickname)s not found.' % nickname), 'error')
         return redirect(url_for('index'))
-    posts = user.ordered_posts.paginate(page, POSTS_PER_PAGE, False)
+    posts = user.ordered_posts().paginate(page, POSTS_PER_PAGE, False)
     
     return render_template('user.html',
                             user=user,
