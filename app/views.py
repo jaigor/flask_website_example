@@ -7,7 +7,7 @@ from .translate import microsoft_translate
 from flask_login import login_user, logout_user, current_user, login_required
 from oauth import OAuthSignIn
 from datetime import datetime
-from config import POSTS_PER_PAGE, LANGUAGES, DATABASE_QUERY_TIMEOUT
+from config import POSTS_PER_PAGE, LANGUAGES, DATABASE_QUERY_TIMEOUT, RECAPTCHA_SITE_KEY, RECAPTCHA_SECRET_KEY
 from flask_babel import gettext
 from guess_language import guessLanguage
 from flask_sqlalchemy import get_debug_queries
@@ -23,14 +23,19 @@ def index(page=1):
         language = guessLanguage(form.post.data)
         if language == 'UNKNOWN' or len(language) > 5:
             language = ''
-        post = Post(body=form.post.data, 
-                    timestamp=datetime.utcnow(), 
-                    author=current_user,
-                    language=language)
-        db.session.add(post)
-        db.session.commit()
-        flash(gettext(u'Your post is now live!'), 'info')
-        return redirect(url_for('index'))
+
+        response = request.form.get('g-recaptcha-response')
+        if form.checkRecaptcha(response,RECAPTCHA_SECRET_KEY):
+            post = Post(body=form.post.data, 
+                        timestamp=datetime.utcnow(), 
+                        author=current_user,
+                        language=language)
+            db.session.add(post)
+            db.session.commit()
+            flash(gettext(u'Your post is now live!'), 'info')
+            return redirect(url_for('index'))
+        else:
+            flash(gettext(u'Your are a bot'), 'error')
 
     posts = current_user.followed_posts().paginate(page, POSTS_PER_PAGE, False)
 
@@ -38,7 +43,8 @@ def index(page=1):
                            title='Home',
                            form=form,
                            posts=posts,
-                           request=request)
+                           request=request
+                           siteKey=RECAPTCHA_SITE_KEY)
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():

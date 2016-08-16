@@ -2,6 +2,8 @@ from flask_wtf import Form
 from wtforms import StringField, TextAreaField
 from wtforms.validators import DataRequired, Length
 from .models import User
+import urllib2
+import json
 
 class EditForm(Form):
     nickname = StringField('nickname', validators=[DataRequired()])
@@ -27,3 +29,17 @@ class EditForm(Form):
 
 class PostForm(Form):
     post = StringField('post', validators=[DataRequired()])
+
+    def checkRecaptcha(response, secretkey):
+        url = 'https://www.google.com/recaptcha/api/siteverify?'
+        url = url + 'secret=' +secretkey
+        url = url + '&response=' +response
+        try:
+            jsonobj = json.loads(urllib2.urlopen(url).read())
+            if jsonobj['success']:
+                return True
+            else:
+                return False
+        except Exception as e:
+            print e
+            return False

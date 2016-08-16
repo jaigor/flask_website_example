@@ -61,3 +61,8 @@ LANGUAGES = {
 # microsoft translation service
 MS_TRANSLATOR_CLIENT_ID = 'MS_TRANSLATOR_CLIENT_ID' # enter your MS translator app id here
 MS_TRANSLATOR_CLIENT_SECRET = 'MS_TRANSLATOR_CLIENT_SECRET' # enter your MS translator app secret here
+
+## Google Recaptcha
+# Check https://www.google.com/recaptcha/intro/index.html
+RECAPTCHA_SITE_KEY = 'RECAPTCHA_SITE_KEY'
+RECAPTCHA_SECRET_KEY = 'RECAPTCHA_SECRET_KEY'
