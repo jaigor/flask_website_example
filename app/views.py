@@ -43,7 +43,7 @@ def index(page=1):
                            title='Home',
                            form=form,
                            posts=posts,
-                           request=request
+                           request=request,
                            siteKey=RECAPTCHA_SITE_KEY)
 
 @app.route('/login', methods=['GET', 'POST'])

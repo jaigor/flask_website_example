@@ -2,7 +2,7 @@ from flask_wtf import Form
 from wtforms import StringField, TextAreaField
 from wtforms.validators import DataRequired, Length
 from .models import User
-import urllib2
+import urllib
 import json
 
 class EditForm(Form):
@@ -41,5 +41,5 @@ class PostForm(Form):
             else:
                 return False
         except Exception as e:
-            print e
+            print (e)
             return False
