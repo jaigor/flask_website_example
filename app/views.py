@@ -4,14 +4,14 @@ from .models import User, Post
 from .forms import EditForm, PostForm
 from .emails import follower_notification
 from .translate import microsoft_translate
+from .recaptcha import checkRecaptcha
 from flask_login import login_user, logout_user, current_user, login_required
 from oauth import OAuthSignIn
 from datetime import datetime
-from config import POSTS_PER_PAGE, LANGUAGES, DATABASE_QUERY_TIMEOUT, RECAPTCHA_SITE_KEY, RECAPTCHA_SECRET_KEY
+from config import POSTS_PER_PAGE, LANGUAGES, DATABASE_QUERY_TIMEOUT, RECAPTCHA_SECRET_KEY
 from flask_babel import gettext
 from guess_language import guessLanguage
 from flask_sqlalchemy import get_debug_queries
-
 
 @app.route('/', methods=['GET', 'POST'])
 @app.route('/index', methods=['GET', 'POST'])
@@ -24,8 +24,9 @@ def index(page=1):
         if language == 'UNKNOWN' or len(language) > 5:
             language = ''
 
+        # google recaptcha verification
         response = request.form.get('g-recaptcha-response')
-        if form.checkRecaptcha(response,RECAPTCHA_SECRET_KEY):
+        if checkRecaptcha(response, RECAPTCHA_SECRET_KEY):
             post = Post(body=form.post.data, 
                         timestamp=datetime.utcnow(), 
                         author=current_user,
@@ -34,6 +35,7 @@ def index(page=1):
             db.session.commit()
             flash(gettext(u'Your post is now live!'), 'info')
             return redirect(url_for('index'))
+
         else:
             flash(gettext(u'Your are a bot'), 'error')
 
@@ -43,8 +45,7 @@ def index(page=1):
                            title='Home',
                            form=form,
                            posts=posts,
-                           request=request,
-                           siteKey=RECAPTCHA_SITE_KEY)
+                           request=request)
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -67,6 +68,7 @@ def logout():
 def oauth_authorize(provider):
     if not current_user.is_anonymous:
         return redirect(url_for('index'))
+
     oauth = OAuthSignIn.get_provider(provider)
     return oauth.authorize()
 
@@ -248,3 +250,4 @@ def after_request(response):
         if query.duration >= DATABASE_QUERY_TIMEOUT:
             app.logger.warning("SLOW QUERY: %s\nParameters: %s\nDuration: %fs\nContext: %s\n" % (query.statement, query.parameters, query.duration, query.context))
     return response
+

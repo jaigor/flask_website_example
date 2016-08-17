@@ -17,11 +17,12 @@
                     </div>
                     {% endfor %}
                 </ul>
-                <div class="g-recaptcha" data-sitekey="{{ siteKey }}"></div>
+                <div class="g-recaptcha" data-sitekey="6Ld6qicTAAAAAIbQZLK1HPjyhI7BO2F2t5dU8A-M"></div>
                 <br>
                 <button type="submit" class="btn">{{ _('Post!') }} </button>
             </fieldset>
         </form>
+    <script src='https://www.google.com/recaptcha/api.js'></script>
     </div>
     <div class="well">
         <h2>{{ _('List of posts') }} </h2>
@@ -58,5 +59,4 @@
         <p><a href="{{ url_for('oauth_authorize', provider='facebook') }}">{{ _('Sign it with Facebook') }}</a></p>
         <p><a href="{{ url_for('oauth_authorize', provider='twitter') }}">{{ _('Sign it with Twitter') }}</a></p>
     {% endif %}
-    <script src='https://www.google.com/recaptcha/api.js'></script>
 {% endblock %}

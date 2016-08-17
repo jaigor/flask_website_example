@@ -23,30 +23,31 @@ MAX_SEARCH_RESULTS = 50
 SQLALCHEMY_TRACK_MODIFICATIONS = True
 
 WTF_CSRF_ENABLED = True
-SECRET_KEY = 'my-secret-is-well-known'
+SECRET_KEY = 'SECRET-KEY'
 
 # credentials used for the services to access
 OAUTH_CREDENTIALS = {
     'facebook': {
-        'id': '636798506489008',
-        'secret': '4d94fc2a98b9b50e1ac0b658e6ead3cc'
+        'id': os.environ['FACEBOOK-APP-ID'],
+        'secret': os.environ['FACEBOOK-APP-SECRET']
     },
     'twitter': {
-        'id': 'PcivizZbO4nUHDxVNL61eP1VA',
-        'secret': 'OPSnX2aNfrNa4kykxze9h1HQkynpMAC3qtxvRD8b8jtrtpmugR'
+        'id': os.environ['TWITTER-APP-ID'],
+        'secret': os.environ['TWITTER-APP-SECRET']
     }
 }
 
 # mail server settings (configuration depends on the server to use (SMTP, POP3, ...))
+# Gmail example
 MAIL_SERVER = os.environ.get('MAIL_SERVER','smtp.gmail.com')
 MAIL_PORT = int(os.environ.get('MAIL_PORT', '465'))
 MAIL_USE_TLS = int(os.environ.get('MAIL_USE_TLS',  False))
 MAIL_USE_SSL = int(os.environ.get('MAIL_USE_SSL',  True))
-MAIL_USERNAME = os.environ.get('MAIL_USERNAME','jaigor@gmail.com')
-MAIL_PASSWORD = os.environ.get('MAIL_PASSWORD','GUCITusr%5')
+MAIL_USERNAME = os.environ.get('MAIL_USERNAME','username@gmail.com')
+MAIL_PASSWORD = os.environ.get('MAIL_PASSWORD','password')
 
 # administrator list
-ADMINS = ['jaigor@gmail.com']
+ADMINS = 'ADMINS'
 
 # pagination
 POSTS_PER_PAGE = 3
@@ -58,10 +59,10 @@ LANGUAGES = {
 }
 
 # microsoft translation service
-MS_TRANSLATOR_CLIENT_ID = 'flask_website_example' # enter your MS translator app id here
-MS_TRANSLATOR_CLIENT_SECRET = 'rQFWALD49+ZfNj3IW9ogYRKuR9rhDeCe/jlJIFi8Jjs=' # enter your MS translator app secret here
+MS_TRANSLATOR_CLIENT_ID = 'MS_TRANSLATOR_CLIENT_ID' # enter your MS translator app id here
+MS_TRANSLATOR_CLIENT_SECRET = 'MS_TRANSLATOR_CLIENT_SECRET' # enter your MS translator app secret here
 
 ## Google Recaptcha
 # Check https://www.google.com/recaptcha/intro/index.html
-RECAPTCHA_SITE_KEY = '6Ld6qicTAAAAAIbQZLK1HPjyhI7BO2F2t5dU8A-M'
-RECAPTCHA_SECRET_KEY = '6Ld6qicTAAAAAAf5nAaHCBOg5vA0ddNVTwHvSX1e'
+RECAPTCHA_SITE_KEY = 'RECAPTCHA_SITE_KEY'
+RECAPTCHA_SECRET_KEY = 'RECAPTCHA_SECRET_KEY'
