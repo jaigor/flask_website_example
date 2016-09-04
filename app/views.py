@@ -4,7 +4,7 @@ from .models import User, Post
 from .forms import EditForm, PostForm
 from .emails import follower_notification
 from .translate import microsoft_translate
-from .recaptcha import checkRecaptcha
+from .recaptcha import checkRecaptchf
 from flask_login import login_user, logout_user, current_user, login_required
 from oauth import OAuthSignIn
 from datetime import datetime
