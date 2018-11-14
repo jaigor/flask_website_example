@@ -28,7 +28,7 @@ python-editor==1.0.1
 python3-openid==3.0.10
 pytz==2016.6.1
 rauth==0.7.2
-requests==2.10.0
+requests==2.20.0
 silpa-common==0.3
 six==1.10.0
 SQLAlchemy==1.0.14
